@@ -1,0 +1,271 @@
+package com.gvl;
+
+import android.Manifest;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.gvl.Model.Contact;
+import com.gvl.Sqlite.GVLDatabase;
+
+import java.util.Calendar;
+
+/**
+ * Created by Bhadresh Chavada on 04-04-2017.
+ */
+
+public class SignUpActivity extends Activity implements View.OnClickListener {
+
+    private static final int DATE_PICKER_ID = 1;
+    EditText birthdate_edt, fname_edt, lname_edt, password_edt, address_edt;
+    AutoCompleteTextView email_edt;
+    private static final int SELECT_PICTURE = 10;
+    Button btn_gallery, btn_camera, btn_submit;
+    ImageView displayImage;
+    private String selectedImagePath = null;
+    private int CAMERA_REQUEST = 20;
+
+
+    private int year;
+    private int month;
+    private int day;
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+        init();
+    }
+
+    void init() {
+        birthdate_edt = (EditText) findViewById(R.id.birthdate_edt);
+        fname_edt = (EditText) findViewById(R.id.fname_edt);
+        lname_edt = (EditText) findViewById(R.id.lname_edt);
+        email_edt = (AutoCompleteTextView) findViewById(R.id.email);
+        password_edt = (EditText) findViewById(R.id.password);
+        address_edt = (EditText) findViewById(R.id.address_edt);
+        btn_submit = (Button) findViewById(R.id.email_sign_in_button);
+        btn_gallery = (Button) findViewById(R.id.btn_gallery);
+        btn_camera = (Button) findViewById(R.id.btn_camera);
+        displayImage = (ImageView) findViewById(R.id.img_display);
+
+        btn_camera.setOnClickListener(this);
+        btn_gallery.setOnClickListener(this);
+        birthdate_edt.setOnClickListener(this);
+        btn_submit.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.birthdate_edt:
+                SelectDate();
+                break;
+            case R.id.btn_gallery:
+                if (ContextCompat.checkSelfPermission(SignUpActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(SignUpActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            1);
+                } else {
+                    OpenGallery();
+                }
+                break;
+            case R.id.btn_camera:
+                if (ContextCompat.checkSelfPermission(SignUpActivity.this,
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(SignUpActivity.this,
+                            new String[]{Manifest.permission.CAMERA},
+                            2);
+                } else {
+                    OpenCamera();
+                }
+                break;
+            case R.id.email_sign_in_button:
+                Registration();
+                break;
+        }
+    }
+
+    private void Registration() {
+        Contact contact = new Contact();
+        contact.setFNAME(fname_edt.getText().toString());
+        contact.setLNAME(lname_edt.getText().toString());
+        contact.setADDRESS(address_edt.getText().toString());
+        contact.setBIRTHDATE(birthdate_edt.getText().toString());
+        contact.setEMAIL(email_edt.getText().toString());
+        contact.setPASSWORD(password_edt.getText().toString());
+        contact.setIMAGE("Dummy");
+        GVLDatabase database = new GVLDatabase(SignUpActivity.this);
+        database.addRegistration(contact);
+
+
+        // fna,lname,email,pass,birthdate, gender,bloodgroup,address-US format,
+    }
+
+    private void SelectDate() {
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        showDialog(DATE_PICKER_ID);
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_PICKER_ID:
+
+                // open datepicker dialog.
+                // set date picker for current date
+                // add pickerListener listner to date picker
+                return new DatePickerDialog(this, pickerListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+
+            // Show selected date
+            birthdate_edt.setText(new StringBuilder().append(month + 1)
+                    .append("-").append(day).append("-").append(year)
+                    .append(" "));
+
+        }
+    };
+
+    private void OpenGallery() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+
+    }
+
+    private void OpenCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+                displayImage.setImageURI(selectedImageUri);
+//                selectedImagePath = getPath(selectedImageUri);
+            } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Toast.makeText(SignUpActivity.this, "" + photo, Toast.LENGTH_SHORT).show();
+                displayImage.setImageBitmap(photo);
+            }
+        }
+    }
+
+    public String getPath(Uri uri) {
+        // just some safety built in
+        if (uri == null) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        // this is our fallback here
+        return uri.getPath();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // gallery-related task you need to do.
+
+                    OpenGallery();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(SignUpActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            case 2: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // camera-related task you need to do.
+
+                    OpenCamera();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(SignUpActivity.this, "Permission denied to open Camera", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+
+        }
+    }
+}
