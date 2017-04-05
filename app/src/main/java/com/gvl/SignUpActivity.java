@@ -15,17 +15,24 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.gvl.Model.Contact;
 import com.gvl.Sqlite.GVLDatabase;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -42,11 +49,15 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     ImageView displayImage;
     private String selectedImagePath = null;
     private int CAMERA_REQUEST = 20;
+    RadioButton rb_male, rb_female;
+    Spinner bloodgroup;
+    String str_image;
 
 
     private int year;
     private int month;
     private int day;
+    private byte[] byteArray;
 
 
     @Override
@@ -67,6 +78,9 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         btn_gallery = (Button) findViewById(R.id.btn_gallery);
         btn_camera = (Button) findViewById(R.id.btn_camera);
         displayImage = (ImageView) findViewById(R.id.img_display);
+        rb_male = (RadioButton) findViewById(R.id.radioMale);
+        rb_female = (RadioButton) findViewById(R.id.radioFemale);
+        bloodgroup = (Spinner) findViewById(R.id.spinner_blood_group);
 
         btn_camera.setOnClickListener(this);
         btn_gallery.setOnClickListener(this);
@@ -117,7 +131,13 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         contact.setBIRTHDATE(birthdate_edt.getText().toString());
         contact.setEMAIL(email_edt.getText().toString());
         contact.setPASSWORD(password_edt.getText().toString());
-        contact.setIMAGE("Dummy");
+        contact.setIMAGE(str_image);
+        contact.setBLOODGROP(bloodgroup.getSelectedItem().toString());
+        if (rb_male.isSelected()) {
+            contact.setGENDER("Male");
+        } else {
+            contact.setGENDER("Female");
+        }
         GVLDatabase database = new GVLDatabase(SignUpActivity.this);
         database.addRegistration(contact);
 
@@ -190,11 +210,36 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 displayImage.setImageURI(selectedImageUri);
-//                selectedImagePath = getPath(selectedImageUri);
+                selectedImagePath = getPath(selectedImageUri);
+
+
+                Uri selectedImage = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(SignUpActivity.this.getContentResolver(), selectedImage);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byteArray = stream.toByteArray();
+
+                    Log.d("byteArray", String.valueOf(byteArray));
+
+                    str_image = byteArray.toString();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
             } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 Toast.makeText(SignUpActivity.this, "" + photo, Toast.LENGTH_SHORT).show();
                 displayImage.setImageBitmap(photo);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byteArray = stream.toByteArray();
+
+                str_image = byteArray.toString();
             }
         }
     }

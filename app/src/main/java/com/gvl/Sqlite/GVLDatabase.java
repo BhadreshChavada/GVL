@@ -95,18 +95,31 @@ public class GVLDatabase extends SQLiteOpenHelper {
     }
 
     public Contact getContact(String email, String password) {
+
+        int count = 0;
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_REGISTRATION, new String[]{REGISTRATION_ID,
-                        REGISTRATION_FNAME, REGISTRATION_LNAME, REGISTRATION_BIRTHDATE, REGISTRATION_EMAIL, REGISTRATION_PASSWORD, REGISTRATION_ADDRESS, REGISTRATION_IMAGE}, REGISTRATION_EMAIL + "=? AND " + REGISTRATION_PASSWORD + "=?",
+                        REGISTRATION_FNAME, REGISTRATION_LNAME, REGISTRATION_BIRTHDATE, REGISTRATION_EMAIL, REGISTRATION_PASSWORD, REGISTRATION_ADDRESS, REGISTRATION_IMAGE, REGISTRATION_GENDER, REGISTRATION_BLOOD_GROUP}, REGISTRATION_EMAIL + "=? AND " + REGISTRATION_PASSWORD + "=?",
                 new String[]{email, password}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        if (cursor != null) {
+//            cursor.moveToFirst();
+            while (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+                break;
+            }
+        }
 
-        Contact contact = new Contact(cursor.getString(0),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9));
-        // return contact
-        return contact;
+        if (count > 0) {
+
+            Contact contact = new Contact(cursor.getString(0),
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9));
+            // return contact
+            return contact;
+        } else {
+            return null;
+        }
     }
 
     // Deleting single contact

@@ -34,6 +34,18 @@ public class Contact {
         this.GENDER = GENDER;
     }
 
+    public Contact(String ID, String FNAME, String LNAME, String BIRTHDATE, String EMAIL, String PASSWORD, String ADDRESS, String IMAGE) {
+        this.ID = ID;
+        this.FNAME = FNAME;
+        this.LNAME = LNAME;
+        this.BIRTHDATE = BIRTHDATE;
+        this.EMAIL = EMAIL;
+        this.PASSWORD = PASSWORD;
+        this.ADDRESS = ADDRESS;
+        this.IMAGE = IMAGE;
+
+    }
+
     public String getID() {
         return ID;
     }

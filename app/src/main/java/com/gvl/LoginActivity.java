@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.gvl.Model.Contact;
+import com.gvl.Sqlite.GVLDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +46,10 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
 
-
-
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
 
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -96,11 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
-        // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -134,10 +131,8 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            LoginCheck();
         }
     }
 
@@ -151,55 +146,18 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    void LoginCheck() {
 
-        private final String mEmail;
-        private final String mPassword;
+        GVLDatabase database = new GVLDatabase(LoginActivity.this);
+        Contact c = database.getContact(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        if (c != null) {
+            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+            Log.d("Fname", c.getFNAME());
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
+        } else {
+            Toast.makeText(this, "Try Again...", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
 
