@@ -5,4 +5,5 @@
     <color name="colorAccent">@color/title_text</color>
     <color name="title_text">#66B9E3</color>
     <color name="yellow">#FFFF00</color>
+    <color name="gray">#ecf0f1</color>
 </resources>
