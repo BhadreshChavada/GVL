@@ -21,7 +21,7 @@
     </string>
 
     <string-array name="blood_groups">
-        <item>Select Blood Groups</item>
+        <item> --- Select Blood Groups --- </item>
         <item>O+</item>
         <item>O-</item>
         <item>A+</item>

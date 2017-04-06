@@ -6,17 +6,6 @@
     android:orientation="vertical"
     tools:context="com.gvl.SignUpActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@color/title_text"
-        android:padding="15dp"
-        android:text="Registration Details"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -78,7 +67,6 @@
                     android:id="@+id/lname_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/bg_edt"
                     android:hint="@string/lname"
                     android:imeActionLabel="@string/lname"
@@ -103,6 +91,7 @@
                     android:imeActionLabel="@string/birthdate"
                     android:maxLines="1"
                     android:padding="10dp"
+
                     android:singleLine="true" />
 
                 <TextView
@@ -110,7 +99,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical"
-                    android:text="Gender" />
+                    android:text="Gender"
+                    android:textSize="18dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -235,7 +225,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Address"
+                    android:text="Address Line 1"
                     android:textSize="18dp" />
 
                 <EditText
@@ -243,14 +233,75 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_edt"
-                    android:hint="@string/address"
-                    android:imeActionId="@+id/login"
+                    android:hint="Street address, P.O.box, Company name c/o"
                     android:imeActionLabel="@string/address"
-                    android:imeOptions="actionUnspecified"
-                    android:lines="3"
-                    android:maxLines="3"
-                    android:minLines="3"
                     android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Address Line2"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/address2_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="Apartment, suite, unit,,building,floor,etc."
+                    android:imeActionLabel="@string/address"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="city"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/address_city_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="City"
+                    android:imeActionLabel="@string/address"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="State/Province/Region"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/address_satte_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="State/Province/Region"
+                    android:imeActionLabel="@string/address"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="ZIP"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/address_zip_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="ZIP"
+                    android:imeActionLabel="@string/address"
+                    android:inputType="number"
+                    android:padding="10dp" />
+
             </LinearLayout>
 
             <TextView
@@ -291,7 +342,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="password"
+                    android:text="Password"
                     android:textSize="18dp" />
 
                 <EditText
@@ -575,4 +626,16 @@
 
          </LinearLayout>-->
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/title_text"
+        android:padding="15dp"
+        android:text="Registration Details"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

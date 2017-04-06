@@ -2,6 +2,7 @@ package com.gvl;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -42,7 +43,7 @@ import java.util.Calendar;
 public class SignUpActivity extends Activity implements View.OnClickListener {
 
     private static final int DATE_PICKER_ID = 1;
-    EditText birthdate_edt, fname_edt, lname_edt, password_edt, address_edt;
+    EditText birthdate_edt, fname_edt, lname_edt, password_edt, socialsec_1, socialsec_2, socialsec_3, address_1_edt, address_2_edt, address_city_edt, address_state_edt, address_zip_edt;
     AutoCompleteTextView email_edt;
     private static final int SELECT_PICTURE = 10;
     Button btn_gallery, btn_camera, btn_submit;
@@ -52,6 +53,8 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     RadioButton rb_male, rb_female;
     Spinner bloodgroup;
     String str_image;
+    int temp = 0;
+    int birthtemp = 0;
 
 
     private int year;
@@ -73,7 +76,6 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         lname_edt = (EditText) findViewById(R.id.lname_edt);
         email_edt = (AutoCompleteTextView) findViewById(R.id.email);
         password_edt = (EditText) findViewById(R.id.password);
-        address_edt = (EditText) findViewById(R.id.address_edt);
         btn_submit = (Button) findViewById(R.id.email_sign_in_button);
         btn_gallery = (Button) findViewById(R.id.btn_gallery);
         btn_camera = (Button) findViewById(R.id.btn_camera);
@@ -81,6 +83,14 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         rb_male = (RadioButton) findViewById(R.id.radioMale);
         rb_female = (RadioButton) findViewById(R.id.radioFemale);
         bloodgroup = (Spinner) findViewById(R.id.spinner_blood_group);
+        socialsec_1 = (EditText) findViewById(R.id.ssn1_edt);
+        socialsec_2 = (EditText) findViewById(R.id.ssn2_edt);
+        socialsec_3 = (EditText) findViewById(R.id.ssn3_edt);
+        address_1_edt = (EditText) findViewById(R.id.address_edt);
+        address_2_edt = (EditText) findViewById(R.id.address2_edt);
+        address_city_edt = (EditText) findViewById(R.id.address_city_edt);
+        address_state_edt = (EditText) findViewById(R.id.address_satte_edt);
+        address_zip_edt = (EditText) findViewById(R.id.address_zip_edt);
 
         btn_camera.setOnClickListener(this);
         btn_gallery.setOnClickListener(this);
@@ -124,23 +134,124 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     }
 
     private void Registration() {
-        Contact contact = new Contact();
-        contact.setFNAME(fname_edt.getText().toString());
-        contact.setLNAME(lname_edt.getText().toString());
-        contact.setADDRESS(address_edt.getText().toString());
-        contact.setBIRTHDATE(birthdate_edt.getText().toString());
-        contact.setEMAIL(email_edt.getText().toString());
-        contact.setPASSWORD(password_edt.getText().toString());
-        contact.setIMAGE(str_image);
-        contact.setBLOODGROP(bloodgroup.getSelectedItem().toString());
-        if (rb_male.isSelected()) {
-            contact.setGENDER("Male");
-        } else {
-            contact.setGENDER("Female");
+        boolean cancel = false;
+        View focusView = null;
+        if (fname_edt.getText().toString().length() == 0) {
+            fname_edt.setError("First Name Can not Null");
+            focusView = fname_edt;
+            cancel = true;
+        } else if (lname_edt.getText().toString().length() == 0) {
+            lname_edt.setError("Last Name Can not Null");
+            focusView = lname_edt;
+            cancel = true;
+        } else if (birthtemp == 0) {
+            Toast.makeText(this, "Choose Birthdate Group", Toast.LENGTH_SHORT).show();
+            cancel = true;
+            cancel = true;
+        } else if (socialsec_1.getText().toString().length() != 3) {
+            socialsec_1.setError("Social Security have 3 digit");
+            focusView = socialsec_1;
+            cancel = true;
+        } else if (socialsec_2.getText().toString().length() != 2) {
+            socialsec_2.setError("Social Security have 2 digit");
+            focusView = socialsec_2;
+            cancel = true;
+        } else if (socialsec_3.getText().toString().length() != 4) {
+            socialsec_3.setError("Social Security have 4 digit");
+            focusView = socialsec_3;
+            cancel = true;
+        } else if (address_1_edt.getText().toString().length() == 0) {
+            address_1_edt.setError("Enter Address Line 1");
+            focusView = address_1_edt;
+            cancel = true;
+        } else if (address_2_edt.getText().toString().length() == 0) {
+            address_2_edt.setError("Enter Address Line 2");
+            focusView = address_2_edt;
+            cancel = true;
+        } else if (address_city_edt.getText().toString().length() == 0) {
+            address_city_edt.setError("Enter City");
+            focusView = address_city_edt;
+            cancel = true;
+        } else if (address_state_edt.getText().toString().length() == 0) {
+            address_state_edt.setError("Enter State/Province/Region");
+            focusView = address_state_edt;
+            cancel = true;
+        } else if (address_zip_edt.getText().toString().length() == 0) {
+            address_zip_edt.setError("Enter ZipCode");
+            focusView = address_zip_edt;
+            cancel = true;
+        } else if (email_edt.getText().toString().length() == 0) {
+            email_edt.setError("Enter Email Id");
+            focusView = email_edt;
+            cancel = true;
+        } else if (!isEmailValid(email_edt.getText().toString())) {
+            email_edt.setError(getString(R.string.error_invalid_email));
+            focusView = email_edt;
+            cancel = true;
+        } else if (password_edt.getText().toString().length() == 0) {
+            password_edt.setError("Enter Password");
+            focusView = password_edt;
+            cancel = true;
+        } else if (temp != 1) {
+            Toast.makeText(this, "Upload Image", Toast.LENGTH_SHORT).show();
+            cancel = true;
+        } else if (bloodgroup.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Choose Blood Group", Toast.LENGTH_SHORT).show();
+            cancel = true;
         }
-        GVLDatabase database = new GVLDatabase(SignUpActivity.this);
-        database.addRegistration(contact);
 
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else if (fname_edt.getText().toString().length() > 0 && lname_edt.getText().toString().length() > 0 && email_edt.getText().toString().length() > 0 && password_edt.getText().toString().length() > 0 && temp == 1) {
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you Confirm the Registration Details.");
+            alertDialogBuilder.setPositiveButton("yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+//                                    Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                            Contact contact = new Contact();
+                            contact.setFNAME(fname_edt.getText().toString());
+                            contact.setLNAME(lname_edt.getText().toString());
+                            contact.setADDRESS(address_1_edt.getText().toString() + "|" + address_2_edt.getText().toString() + "|" + address_city_edt.getText().toString() + "|" + address_state_edt.getText().toString() + "|" + address_zip_edt.getText().toString());
+                            contact.setBIRTHDATE(birthdate_edt.getText().toString());
+                            contact.setEMAIL(email_edt.getText().toString());
+                            contact.setPASSWORD(password_edt.getText().toString());
+                            contact.setIMAGE(str_image);
+                            contact.setBLOODGROP(bloodgroup.getSelectedItem().toString());
+                            if (rb_male.isSelected()) {
+                                contact.setGENDER("Male");
+                            } else {
+                                contact.setGENDER("Female");
+                            }
+                            GVLDatabase database = new GVLDatabase(SignUpActivity.this);
+                            database.addRegistration(contact);
+                            Intent intent = new Intent(SignUpActivity.this, ConfirmActivity.class);
+                            startActivity(intent);
+                            SignUpActivity.this.finish();
+
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    finish();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+
+        } else
+
+        {
+            Toast.makeText(this, "Enter All the Field", Toast.LENGTH_SHORT).show();
+        }
 
         // fna,lname,email,pass,birthdate, gender,bloodgroup,address-US format,
     }
@@ -181,6 +292,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             month = selectedMonth;
             day = selectedDay;
 
+            birthtemp = 1;
             // Show selected date
             birthdate_edt.setText(new StringBuilder().append(month + 1)
                     .append("-").append(day).append("-").append(year)
@@ -208,6 +320,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
+                temp = 1;
                 Uri selectedImageUri = data.getData();
                 displayImage.setImageURI(selectedImageUri);
                 selectedImagePath = getPath(selectedImageUri);
@@ -231,6 +344,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
 
 
             } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+                temp = 1;
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 Toast.makeText(SignUpActivity.this, "" + photo, Toast.LENGTH_SHORT).show();
                 displayImage.setImageBitmap(photo);
@@ -312,5 +426,10 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
 
 
         }
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
     }
 }

@@ -105,11 +105,17 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+
+        // password-- aleart -
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) ) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }else if(!isPasswordValid(password)){
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -155,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("Fname", c.getFNAME());
 
         } else {
-            Toast.makeText(this, "Try Again...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email or Passwrod Wrong.", Toast.LENGTH_SHORT).show();
         }
     }
 
