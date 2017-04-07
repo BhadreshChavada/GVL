@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:icon">@mipmap/ic_launcher</item>
+        <item name="android:logo">@mipmap/ic_launcher</item>
     </style>
 
 </resources>

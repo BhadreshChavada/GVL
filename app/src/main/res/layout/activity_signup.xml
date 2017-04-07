@@ -241,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Address Line2"
+                    android:text="Address Line 2"
                     android:textSize="18dp" />
 
                 <EditText
@@ -249,7 +249,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_edt"
-                    android:hint="Apartment, suite, unit,,building,floor,etc."
+                    android:hint="Apartment, suite, unit, building,floor,etc."
                     android:imeActionLabel="@string/address"
                     android:padding="10dp" />
 
@@ -257,7 +257,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="city"
+                    android:text="City"
                     android:textSize="18dp" />
 
                 <EditText
@@ -300,6 +300,21 @@
                     android:hint="ZIP"
                     android:imeActionLabel="@string/address"
                     android:inputType="number"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Country"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/address_country_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="Country"
                     android:padding="10dp" />
 
             </LinearLayout>

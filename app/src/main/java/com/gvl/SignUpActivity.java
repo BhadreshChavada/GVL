@@ -16,6 +16,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -40,10 +42,10 @@ import java.util.Calendar;
  * Created by Bhadresh Chavada on 04-04-2017.
  */
 
-public class SignUpActivity extends Activity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int DATE_PICKER_ID = 1;
-    EditText birthdate_edt, fname_edt, lname_edt, password_edt, socialsec_1, socialsec_2, socialsec_3, address_1_edt, address_2_edt, address_city_edt, address_state_edt, address_zip_edt;
+    EditText birthdate_edt, fname_edt, lname_edt, password_edt, socialsec_1, socialsec_2, socialsec_3, address_1_edt, address_2_edt, address_city_edt, address_state_edt, address_zip_edt, address_country_edt;
     AutoCompleteTextView email_edt;
     private static final int SELECT_PICTURE = 10;
     Button btn_gallery, btn_camera, btn_submit;
@@ -67,6 +69,12 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.mipmap.ic_launcher);
+        menu.setDisplayUseLogoEnabled(true);
+
         init();
     }
 
@@ -91,6 +99,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         address_city_edt = (EditText) findViewById(R.id.address_city_edt);
         address_state_edt = (EditText) findViewById(R.id.address_satte_edt);
         address_zip_edt = (EditText) findViewById(R.id.address_zip_edt);
+        address_country_edt = (EditText) findViewById(R.id.address_country_edt);
 
         btn_camera.setOnClickListener(this);
         btn_gallery.setOnClickListener(this);
@@ -135,20 +144,21 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
     }
 
     private void Registration() {
+
         boolean cancel = false;
         View focusView = null;
         if (fname_edt.getText().toString().length() == 0) {
-            fname_edt.setError("First Name Can not Null");
+            fname_edt.setError("First Name is required");
             focusView = fname_edt;
             cancel = true;
         } else if (lname_edt.getText().toString().length() == 0) {
-            lname_edt.setError("Last Name Can not Null");
+            lname_edt.setError("Last Name is required");
             focusView = lname_edt;
             cancel = true;
         } else if (birthtemp == 0) {
-            focusView = birthdate_edt;
-            Toast.makeText(this, "Choose Birthdate Group", Toast.LENGTH_SHORT).show();
-            cancel = true;
+            Toast.makeText(this, "Choose Birthdate", Toast.LENGTH_SHORT).show();
+        } else if (bloodgroup.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Choose Blood Group", Toast.LENGTH_SHORT).show();
         } else if (socialsec_1.getText().toString().length() != 3) {
             socialsec_1.setError("Social Security have 3 digit");
             focusView = socialsec_1;
@@ -162,42 +172,43 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             focusView = socialsec_3;
             cancel = true;
         } else if (address_1_edt.getText().toString().length() == 0) {
-            address_1_edt.setError("Enter Address Line 1");
+            address_1_edt.setError("Address Line 1 is required");
             focusView = address_1_edt;
             cancel = true;
         } else if (address_2_edt.getText().toString().length() == 0) {
-            address_2_edt.setError("Enter Address Line 2");
+            address_2_edt.setError("Address Line 2 is required");
             focusView = address_2_edt;
             cancel = true;
         } else if (address_city_edt.getText().toString().length() == 0) {
-            address_city_edt.setError("Enter City");
+            address_city_edt.setError("City is required");
             focusView = address_city_edt;
             cancel = true;
         } else if (address_state_edt.getText().toString().length() == 0) {
-            address_state_edt.setError("Enter State/Province/Region");
+            address_state_edt.setError("State/Province/Region is required");
             focusView = address_state_edt;
             cancel = true;
         } else if (address_zip_edt.getText().toString().length() == 0) {
-            address_zip_edt.setError("Enter ZipCode");
+            address_zip_edt.setError("ZipCode is required");
             focusView = address_zip_edt;
             cancel = true;
+        } else if (address_country_edt.getText().toString().length() == 0) {
+            address_country_edt.setError("Country is required");
+            focusView = address_country_edt;
+            cancel = true;
         } else if (email_edt.getText().toString().length() == 0) {
-            email_edt.setError("Enter Email Id");
+            email_edt.setError("Email is required");
             focusView = email_edt;
             cancel = true;
-        } else if (!isEmailValid(email_edt.getText().toString())) {
+        } else if (!isValidEmail(email_edt.getText().toString())) {
             email_edt.setError(getString(R.string.error_invalid_email));
             focusView = email_edt;
             cancel = true;
         } else if (password_edt.getText().toString().length() == 0) {
-            password_edt.setError("Enter Password");
+            password_edt.setError("Password is required");
             focusView = password_edt;
             cancel = true;
         } else if (temp != 1) {
             Toast.makeText(this, "Upload Image", Toast.LENGTH_SHORT).show();
-
-        } else if (bloodgroup.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, "Choose Blood Group", Toast.LENGTH_SHORT).show();
         }
 
         // signin - email is required,signup color- address country add
@@ -207,10 +218,12 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
+        } else if (temp == 0 && birthtemp == 0 && bloodgroup.getSelectedItemPosition() == 0) {
+
         } else if (fname_edt.getText().toString().length() > 0 && lname_edt.getText().toString().length() > 0 && email_edt.getText().toString().length() > 0 && password_edt.getText().toString().length() > 0 && temp == 1) {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Are you Confirm the Registration Details.");
+            alertDialogBuilder.setMessage("Do you want to Submit?");
             alertDialogBuilder.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -219,7 +232,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
                             Contact contact = new Contact();
                             contact.setFNAME(fname_edt.getText().toString());
                             contact.setLNAME(lname_edt.getText().toString());
-                            contact.setADDRESS(address_1_edt.getText().toString() + "|" + address_2_edt.getText().toString() + "|" + address_city_edt.getText().toString() + "|" + address_state_edt.getText().toString() + "|" + address_zip_edt.getText().toString());
+                            contact.setADDRESS(address_1_edt.getText().toString() + "|" + address_2_edt.getText().toString() + "|" + address_city_edt.getText().toString() + "|" + address_state_edt.getText().toString() + "|" + address_zip_edt.getText().toString() + "|" + address_country_edt.getText().toString());
                             contact.setBIRTHDATE(birthdate_edt.getText().toString());
                             contact.setEMAIL(email_edt.getText().toString());
                             contact.setPASSWORD(password_edt.getText().toString());
@@ -252,7 +265,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         } else
 
         {
-            Toast.makeText(this, "Enter All the Field", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Enter All the Field", Toast.LENGTH_SHORT).show();
         }
 
         // fna,lname,email,pass,birthdate, gender,bloodgroup,address-US format,
@@ -348,7 +361,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
                 temp = 1;
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                Toast.makeText(SignUpActivity.this, "" + photo, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SignUpActivity.this, "" + photo, Toast.LENGTH_SHORT).show();
                 displayImage.setImageBitmap(photo);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -430,8 +443,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+    public final static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }
