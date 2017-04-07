@@ -103,6 +103,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.birthdate_edt:
+                birthtemp = 1;
                 SelectDate();
                 break;
             case R.id.btn_gallery:
@@ -145,8 +146,8 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             focusView = lname_edt;
             cancel = true;
         } else if (birthtemp == 0) {
+            focusView = birthdate_edt;
             Toast.makeText(this, "Choose Birthdate Group", Toast.LENGTH_SHORT).show();
-            cancel = true;
             cancel = true;
         } else if (socialsec_1.getText().toString().length() != 3) {
             socialsec_1.setError("Social Security have 3 digit");
@@ -194,11 +195,12 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             cancel = true;
         } else if (temp != 1) {
             Toast.makeText(this, "Upload Image", Toast.LENGTH_SHORT).show();
-            cancel = true;
+
         } else if (bloodgroup.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Choose Blood Group", Toast.LENGTH_SHORT).show();
-            cancel = true;
         }
+
+        // signin - email is required,signup color- address country add
 
 
         if (cancel) {
@@ -292,7 +294,7 @@ public class SignUpActivity extends Activity implements View.OnClickListener {
             month = selectedMonth;
             day = selectedDay;
 
-            birthtemp = 1;
+
             // Show selected date
             birthdate_edt.setText(new StringBuilder().append(month + 1)
                     .append("-").append(day).append("-").append(year)
