@@ -1,12 +1,15 @@
 package com.gvl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +23,7 @@ import java.util.logging.Handler;
  * Created by AMD21 on 5/4/17.
  */
 
-public class QuizActivity extends Activity {
+public class QuizActivity extends AppCompatActivity {
 
     ArrayList<QuizModel> QuizArray = new ArrayList<>();
     TextView question, timertxt;
@@ -29,12 +32,17 @@ public class QuizActivity extends Activity {
     int count = 0;
     CountDownTimer CountDownTimer;
     int Result = 0;
+    int temp = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.mipmap.ic_launcher);
+        menu.setDisplayUseLogoEnabled(true);
         init();
     }
 
@@ -83,6 +91,71 @@ public class QuizActivity extends Activity {
                 }
             }
         });
+
+        option1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Submitbtn.setText("Submit");
+                } else if (option2.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option3.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option4.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else {
+                    Submitbtn.setText("Next");
+                }
+            }
+        });
+        option2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Submitbtn.setText("Submit");
+                } else if (option1.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option3.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option4.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else {
+                    Submitbtn.setText("Next");
+                }
+            }
+        });
+        option3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Submitbtn.setText("Submit");
+                } else if (option2.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option1.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option4.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else {
+                    Submitbtn.setText("Next");
+                }
+            }
+        });
+        option4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Submitbtn.setText("Submit");
+                } else if (option2.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option3.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else if (option1.isChecked()) {
+                    Submitbtn.setText("Submit");
+                } else {
+                    Submitbtn.setText("Next");
+                }
+            }
+        });
     }
 
     private void setData() {
@@ -93,6 +166,8 @@ public class QuizActivity extends Activity {
             option2.setText(QuizArray.get(count).getOption2());
             option3.setText(QuizArray.get(count).getOption3());
             option4.setText(QuizArray.get(count).getOption4());
+
+            Submitbtn.setText("Next");
 
             option1.setChecked(false);
             option2.setChecked(false);
@@ -112,7 +187,7 @@ public class QuizActivity extends Activity {
 //                }
 //            }, 60000);
 
-            CountDownTimer = new CountDownTimer(60000, 1000) {
+            CountDownTimer = new CountDownTimer(30000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     timertxt.setText("" + millisUntilFinished / 1000);
@@ -127,7 +202,10 @@ public class QuizActivity extends Activity {
 
 
         } else {
-            Toast.makeText(QuizActivity.this, "Quiz FINISH Result is ---  " + Result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(QuizActivity.this, "Quiz Successfully Completed", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(QuizActivity.this, MainMenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
@@ -150,5 +228,32 @@ public class QuizActivity extends Activity {
             QuizArray.add(i, quizModel);
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        temp = 1;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        temp = 1;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (temp == 1) {
+            Intent intent = new Intent(QuizActivity.this, MainMenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

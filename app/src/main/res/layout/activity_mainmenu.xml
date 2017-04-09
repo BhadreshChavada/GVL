@@ -7,17 +7,20 @@
 
 
     <Button
+        android:id="@+id/btn_learning_licence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Apply for Learning Licence"/>
+        android:text="Apply For Learning Licence" />
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Apply Licence"/>
+        android:text="Apply Licence" />
 
     <Button
+        android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"/>
+        android:text="Logout" />
 </LinearLayout>

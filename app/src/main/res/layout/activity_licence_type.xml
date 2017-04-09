@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/btn_learning_licence_class_m"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class M Learning Licence" />
+
+    <Button
+        android:id="@+id/btn_learning_licence_class_f"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class F Learning Licence" />
+
+    <Button
+        android:id="@+id/btn_learning_licence_class_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class E Learning Licence" />
+
+    <Button
+        android:id="@+id/btn_learning_licence_class_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Class C Learning Licence" />
+
+</LinearLayout>
