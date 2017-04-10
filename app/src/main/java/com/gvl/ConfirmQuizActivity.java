@@ -13,6 +13,7 @@ import android.widget.Button;
 
 public class ConfirmQuizActivity extends AppCompatActivity implements View.OnClickListener {
     Button btn_start_quiz;
+    String Licence_Type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,6 +24,9 @@ public class ConfirmQuizActivity extends AppCompatActivity implements View.OnCli
         menu.setDisplayShowHomeEnabled(true);
         menu.setLogo(R.mipmap.ic_launcher);
         menu.setDisplayUseLogoEnabled(true);
+
+        Licence_Type = getIntent().getStringExtra("Licence_Type");
+
 
         init();
     }
@@ -38,6 +42,7 @@ public class ConfirmQuizActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         if (v.getId() == R.id.btn_start_quiz) {
             Intent intent = new Intent(ConfirmQuizActivity.this, QuizActivity.class);
+            intent.putExtra("Licence_Type",Licence_Type);
             startActivity(intent);
             this.finish();
         }

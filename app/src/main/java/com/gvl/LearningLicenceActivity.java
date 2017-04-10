@@ -43,15 +43,19 @@ public class LearningLicenceActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         if (v.getId() == R.id.btn_learning_licence_class_c ) {
             Intent intent = new Intent(LearningLicenceActivity.this, ConfirmQuizActivity.class);
+            intent.putExtra("Licence_Type","Class C");
             startActivity(intent);
         } else if (v.getId() == R.id.btn_learning_licence_class_e) {
             Intent intent = new Intent(LearningLicenceActivity.this, ConfirmQuizActivity.class);
+            intent.putExtra("Licence_Type","Class E");
             startActivity(intent);
         } else if (v.getId() == R.id.btn_learning_licence_class_f) {
             Intent intent = new Intent(LearningLicenceActivity.this, ConfirmQuizActivity.class);
+            intent.putExtra("Licence_Type","Class F");
             startActivity(intent);
         } else if (v.getId() == R.id.btn_learning_licence_class_m) {
             Intent intent = new Intent(LearningLicenceActivity.this, ConfirmQuizActivity.class);
+            intent.putExtra("Licence_Type","Class M");
             startActivity(intent);
         }
     }

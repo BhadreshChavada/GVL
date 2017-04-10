@@ -15,7 +15,7 @@ import android.widget.Button;
 
 public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btn_licence, btn_logout, btn_learning_licence;
+    Button btn_logout, btn_learning_licence, btn_apply_licence;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,11 +34,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         btn_learning_licence = (Button) findViewById(R.id.btn_learning_licence);
         btn_logout = (Button) findViewById(R.id.btn_logout);
+        btn_apply_licence = (Button) findViewById(R.id.btn_apply_licence);
+
 //        btn_licence, btn_logout;
 
 
         btn_learning_licence.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
+        btn_apply_licence.setOnClickListener(this);
     }
 
     @Override
@@ -54,6 +57,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             this.finish();
+        }
+        else if(v.getId() == R.id.btn_apply_licence){
+            Intent intent = new Intent(MainMenuActivity.this, LicenceActivity.class);
+            startActivity(intent);
         }
 
     }

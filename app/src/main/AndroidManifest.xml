@@ -43,22 +43,31 @@
             android:icon="@mipmap/ic_launcher"
             android:label=""
             android:logo="@mipmap/ic_launcher" />
-        <activity android:name=".LearningLicenceActivity"
+        <activity
+            android:name=".LearningLicenceActivity"
             android:icon="@mipmap/ic_launcher"
             android:label=""
-            android:logo="@mipmap/ic_launcher"/>
-        <activity android:name=".ConfirmQuizActivity"
+            android:logo="@mipmap/ic_launcher" />
+        <activity
+            android:name=".ConfirmQuizActivity"
             android:icon="@mipmap/ic_launcher"
             android:label=""
-            android:logo="@mipmap/ic_launcher"/>
-        <activity android:name=".MainMenuActivity"
+            android:logo="@mipmap/ic_launcher" />
+        <activity
+            android:name=".MainMenuActivity"
             android:icon="@mipmap/ic_launcher"
             android:label=""
-            android:logo="@mipmap/ic_launcher"/>
-        <activity android:name=".QuizActivity"
+            android:logo="@mipmap/ic_launcher" />
+        <activity
+            android:name=".QuizActivity"
             android:icon="@mipmap/ic_launcher"
             android:label=""
-            android:logo="@mipmap/ic_launcher"/>
+            android:logo="@mipmap/ic_launcher" />
+        <activity
+            android:name=".LicenceActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label=""
+            android:logo="@mipmap/ic_launcher" />
     </application>
 
 </manifest>

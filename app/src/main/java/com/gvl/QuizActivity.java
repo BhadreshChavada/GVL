@@ -2,6 +2,7 @@ package com.gvl;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,9 +15,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gvl.Model.LicenceModel;
 import com.gvl.Model.QuizModel;
+import com.gvl.Sqlite.GVLDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Handler;
 
 /**
@@ -33,6 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     CountDownTimer CountDownTimer;
     int Result = 0;
     int temp = 0;
+    private String Licence_Type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +49,9 @@ public class QuizActivity extends AppCompatActivity {
         menu.setDisplayShowHomeEnabled(true);
         menu.setLogo(R.mipmap.ic_launcher);
         menu.setDisplayUseLogoEnabled(true);
+
+        Licence_Type = getIntent().getStringExtra("Licence_Type");
+
         init();
     }
 
@@ -202,7 +211,28 @@ public class QuizActivity extends AppCompatActivity {
 
 
         } else {
+
+            if (CountDownTimer != null)
+                CountDownTimer.cancel();
             Toast.makeText(QuizActivity.this, "Quiz Successfully Completed", Toast.LENGTH_SHORT).show();
+            GVLDatabase database = new GVLDatabase(QuizActivity.this);
+
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+            String datetime = dateformat.format(c.getTime());
+            System.out.println(datetime);
+
+            SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+
+
+            LicenceModel model = new LicenceModel();
+            model.setAPPLYDATE(datetime);
+            model.setEXAMSCORE(String.valueOf(Result));
+            model.setSTATUS(false);
+            model.setUSERID(sp.getString("USERID", ""));
+            model.setVEHICLE_TYPE(Licence_Type);
+            database.addLicenceRequest(model);
+
             Intent intent = new Intent(QuizActivity.this, MainMenuActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -219,7 +249,7 @@ public class QuizActivity extends AppCompatActivity {
 
         for (int i = 0; i < 30; i++) {
             QuizModel quizModel = new QuizModel();
-            quizModel.setQuestion(Question[i]);
+            quizModel.setQuestion(i + 1 + ".  " + Question[i]);
             quizModel.setOption1(Option1[i]);
             quizModel.setOption2(Option2[i]);
             quizModel.setOption3(Option3[i]);

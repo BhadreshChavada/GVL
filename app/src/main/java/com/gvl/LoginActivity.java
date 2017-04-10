@@ -172,6 +172,7 @@ public class LoginActivity extends AppCompatActivity {
 
             SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE",MODE_PRIVATE);
             sp.edit().putString("EMAIL",c.getEMAIL()).commit();
+            sp.edit().putString("USERID",c.getID()).commit();
 
             Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
             startActivity(intent);
