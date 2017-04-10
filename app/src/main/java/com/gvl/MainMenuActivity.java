@@ -8,6 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.gvl.Model.UserLicenceModel;
+import com.gvl.Sqlite.GVLDatabase;
+
+import java.util.List;
 
 /**
  * Created by AMD21 on 5/4/17.
@@ -28,6 +34,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         menu.setDisplayUseLogoEnabled(true);
 
         init();
+        Join();
     }
 
     void init() {
@@ -57,10 +64,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             this.finish();
-        }
-        else if(v.getId() == R.id.btn_apply_licence){
+        } else if (v.getId() == R.id.btn_apply_licence) {
             Intent intent = new Intent(MainMenuActivity.this, LicenceActivity.class);
             startActivity(intent);
+        }
+
+    }
+
+    void Join() {
+        GVLDatabase database = new GVLDatabase(MainMenuActivity.this);
+        List<UserLicenceModel> data = database.getContact();
+
+        if (data != null) {
+            Toast.makeText(this, "" + data.get(0).getEXAMSCORE(), Toast.LENGTH_SHORT).show();
         }
 
     }

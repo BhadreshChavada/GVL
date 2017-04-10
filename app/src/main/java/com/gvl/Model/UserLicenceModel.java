@@ -21,6 +21,24 @@ public class UserLicenceModel {
     String PASSWORD;
     String ADDRESS;
     String IMAGE;
+    String GENDER;
+    String BLOODGROUP;
+
+    public String getGENDER() {
+        return GENDER;
+    }
+
+    public void setGENDER(String GENDER) {
+        this.GENDER = GENDER;
+    }
+
+    public String getBLOODGROUP() {
+        return BLOODGROUP;
+    }
+
+    public void setBLOODGROUP(String BLOODGROUP) {
+        this.BLOODGROUP = BLOODGROUP;
+    }
 
     public UserLicenceModel() {
     }

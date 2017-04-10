@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Handler;
 
-/**
- * Created by AMD21 on 5/4/17.
- */
+
 
 public class QuizActivity extends AppCompatActivity {
 

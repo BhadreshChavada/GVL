@@ -175,4 +175,42 @@ public class GVLDatabase extends SQLiteOpenHelper {
         // return contact list
         return LicenceModel;
     }
+
+    public List<UserLicenceModel> getContact() {
+        List<UserLicenceModel> LicenceModel = new ArrayList<UserLicenceModel>();
+
+//        String Query = "SELECT " + REGISTRATION_FNAME + ", " + REGISTRATION_EMAIL + ", " + REGISTRATION_LNAME + ", " + LEARNING_LIC_EXAMSCORE + " FROM " + TABLE_REGISTRATION + " INNER JOIN " + TABLE_LEARNING_LIC_REGISTRATION + " ON " + TABLE_REGISTRATION + "." + REGISTRATION_ID + "=" + TABLE_LEARNING_LIC_REGISTRATION + "." + LEARNING_LIC_ID;
+
+        String Query = "SELECT *" + " FROM " + TABLE_REGISTRATION + " INNER JOIN " + TABLE_LEARNING_LIC_REGISTRATION + " ON " + TABLE_REGISTRATION + "." + REGISTRATION_ID + "=" + TABLE_LEARNING_LIC_REGISTRATION + "." + LEARNING_LIC_ID;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(Query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                UserLicenceModel licenceModel = new UserLicenceModel();
+                licenceModel.setUSERID(cursor.getString(0));
+                licenceModel.setFNAME(cursor.getString(1));
+                licenceModel.setLNAME(cursor.getString(2));
+                licenceModel.setBIRTHDATE(cursor.getString(3));
+                licenceModel.setEMAIL(cursor.getString(4));
+                licenceModel.setPASSWORD(cursor.getString(5));
+                licenceModel.setADDRESS(cursor.getString(6));
+                licenceModel.setIMAGE(cursor.getString(7));
+                licenceModel.setGENDER(cursor.getString(8));
+                licenceModel.setBLOODGROUP(cursor.getString(9));
+                licenceModel.setID(cursor.getString(10));
+                licenceModel.setVEHICLE_TYPE(cursor.getString(11));
+                licenceModel.setAPPLYDATE(cursor.getString(12));
+                licenceModel.setEXAMSCORE(cursor.getString(13));
+                licenceModel.setSTATUS(Boolean.valueOf(cursor.getString(14)));
+                licenceModel.setUSERID(cursor.getString(15));
+
+                // Adding contact to list
+                LicenceModel.add(licenceModel);
+            } while (cursor.moveToNext());
+        }
+        return LicenceModel;
+    }
 }

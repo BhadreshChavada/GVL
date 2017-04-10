@@ -1,10 +1,12 @@
 package com.gvl.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.gvl.Model.LicenceModel;
@@ -46,7 +48,9 @@ public class LicenceAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         convertView = inflater.inflate(R.layout.adapter_licence, null);
+
 
         TextView txt_licence_apply_date, txt_licence_type, txt_licence_exam_score, txt_licence_status;
 
@@ -64,6 +68,7 @@ public class LicenceAdapter extends BaseAdapter {
         else
             status = "Approve";
         txt_licence_status.setText(status);
+
 
         return convertView;
     }
