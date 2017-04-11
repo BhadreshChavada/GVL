@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gvl">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -68,6 +69,12 @@
             android:icon="@mipmap/ic_launcher"
             android:label=""
             android:logo="@mipmap/ic_launcher" />
+        <activity
+            android:name=".TestResult"
+            android:icon="@mipmap/ic_launcher"
+            android:label=""
+            android:logo="@mipmap/ic_launcher" />
+
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.gvl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.gvl.Model.Contact;
 import com.gvl.Model.UserLicenceModel;
 import com.gvl.Sqlite.GVLDatabase;
 
@@ -34,7 +37,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         menu.setDisplayUseLogoEnabled(true);
 
         init();
-        Join();
+//        Join();
     }
 
     void init() {
@@ -58,12 +61,34 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(MainMenuActivity.this, LearningLicenceActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.btn_logout) {
-            SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
-            sp.edit().clear().commit();
-            Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            this.finish();
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Do you want to Logout?");
+            alertDialogBuilder.setPositiveButton("yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+//                                    Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+
+                            SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+                            sp.edit().clear().commit();
+                            Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            MainMenuActivity.this.finish();
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+//                    finish();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+
         } else if (v.getId() == R.id.btn_apply_licence) {
             Intent intent = new Intent(MainMenuActivity.this, LicenceActivity.class);
             startActivity(intent);
@@ -71,13 +96,13 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    void Join() {
-        GVLDatabase database = new GVLDatabase(MainMenuActivity.this);
-        List<UserLicenceModel> data = database.getContact();
-
-        if (data != null) {
-            Toast.makeText(this, "" + data.get(0).getEXAMSCORE(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//    void Join() {
+//        GVLDatabase database = new GVLDatabase(MainMenuActivity.this);
+//        List<UserLicenceModel> data = database.getContact();
+//
+//        if (data != null) {
+//            Toast.makeText(this, "" + data.get(0).getEXAMSCORE(), Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 }

@@ -2,31 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/bg_color">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Apply for Learning Licence"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/btn_learning_licence_class_m"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class M Learning Licence" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_btn"
+        android:text="Class M " />
 
     <Button
         android:id="@+id/btn_learning_licence_class_f"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class F Learning Licence" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_btn"
+        android:text="Class F " />
 
     <Button
         android:id="@+id/btn_learning_licence_class_e"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class E Learning Licence" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_btn"
+        android:text="Class E " />
 
     <Button
         android:id="@+id/btn_learning_licence_class_c"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class C Learning Licence" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_btn"
+        android:text="Class C " />
 
 </LinearLayout>

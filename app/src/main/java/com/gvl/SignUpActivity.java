@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Bhadresh Chavada on 04-04-2017.
@@ -291,7 +292,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 // open datepicker dialog.
                 // set date picker for current date
                 // add pickerListener listner to date picker
-                return new DatePickerDialog(this, pickerListener, year, month, day);
+                Calendar c = Calendar.getInstance();
+                c.set(year - 18, month + 1, day);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, year - 18, month + 1, day);
+                datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+                return datePickerDialog;
         }
         return null;
     }

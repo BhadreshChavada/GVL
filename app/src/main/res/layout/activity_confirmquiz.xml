@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="10"
+    android:background="@color/bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,9 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
-            android:text="Rules and Regulation of Quiz"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
+            android:text="Rules and Regulation of Test"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="2). If back press or minimize the application Quiz will be terminated. " />
+            android:text="2). If back press or minimize the application Test will be terminated. " />
     </LinearLayout>
 
     <Button
@@ -39,5 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Start Quiz" />
+        android:text="Start Test"
+        android:background="@drawable/bg_btn"/>
 </LinearLayout>

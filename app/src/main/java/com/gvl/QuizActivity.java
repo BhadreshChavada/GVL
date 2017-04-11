@@ -12,18 +12,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gvl.Model.LicenceModel;
 import com.gvl.Model.QuizModel;
 import com.gvl.Sqlite.GVLDatabase;
+import com.gvl.Utils.SendMail;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Handler;
-
 
 
 public class QuizActivity extends AppCompatActivity {
@@ -39,6 +40,8 @@ public class QuizActivity extends AppCompatActivity {
     int Result = 0;
     int temp = 0;
     private String Licence_Type;
+    String datetime;
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class QuizActivity extends AppCompatActivity {
 
         InsertData();
         question = (TextView) findViewById(R.id.questiontxt);
+
+        radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
         option1 = (RadioButton) findViewById(R.id.option1);
         option2 = (RadioButton) findViewById(R.id.option2);
         option3 = (RadioButton) findViewById(R.id.option3);
@@ -178,10 +183,13 @@ public class QuizActivity extends AppCompatActivity {
 
             Submitbtn.setText("Next");
 
-            option1.setChecked(false);
-            option2.setChecked(false);
-            option3.setChecked(false);
-            option4.setChecked(false);
+//            option1.setChecked(false);
+//            option2.setChecked(false);
+//            option3.setChecked(false);
+//            option4.setChecked(false);
+
+
+            radioGroup.clearCheck();
 
 
             if (CountDownTimer != null)
@@ -199,7 +207,7 @@ public class QuizActivity extends AppCompatActivity {
             CountDownTimer = new CountDownTimer(30000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    timertxt.setText("" + millisUntilFinished / 1000);
+                    timertxt.setText("Time Left : " + millisUntilFinished / 1000 + "  Sec");
                 }
 
                 public void onFinish() {
@@ -214,12 +222,12 @@ public class QuizActivity extends AppCompatActivity {
 
             if (CountDownTimer != null)
                 CountDownTimer.cancel();
-            Toast.makeText(QuizActivity.this, "Quiz Successfully Completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QuizActivity.this, "Test Successfully Completed", Toast.LENGTH_SHORT).show();
             GVLDatabase database = new GVLDatabase(QuizActivity.this);
 
             Calendar c = Calendar.getInstance();
             SimpleDateFormat dateformat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-            String datetime = dateformat.format(c.getTime());
+            datetime = dateformat.format(c.getTime());
             System.out.println(datetime);
 
             SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
@@ -233,7 +241,10 @@ public class QuizActivity extends AppCompatActivity {
             model.setVEHICLE_TYPE(Licence_Type);
             database.addLicenceRequest(model);
 
-            Intent intent = new Intent(QuizActivity.this, MainMenuActivity.class);
+            sendEmail();
+
+            Intent intent = new Intent(QuizActivity.this, TestResult.class);
+            intent.putExtra("Score", String.valueOf(Result));
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
@@ -285,5 +296,21 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void sendEmail() {
+        //Getting content for email
+
+        SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+
+        String email = sp.getString("EMAIL", "");
+        String subject = "Georgia Driving Licence";
+        String message = " you completed the Test at " + datetime + "., for " + Licence_Type + ". Your Score is :  " + Result;
+
+        //Creating SendMail object
+        SendMail sm = new SendMail(this, email, subject, message);
+
+        //Executing sendmail to send email
+        sm.execute();
     }
 }
