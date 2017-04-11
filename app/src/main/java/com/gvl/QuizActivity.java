@@ -28,6 +28,8 @@ import java.util.logging.Handler;
 
 public class QuizActivity extends AppCompatActivity {
 
+//    https://www.simplifiedcoding.net/android-email-app-using-javamail-api-in-android-studio/
+
     ArrayList<QuizModel> QuizArray = new ArrayList<>();
     TextView question, timertxt;
     RadioButton option1, option2, option3, option4;
