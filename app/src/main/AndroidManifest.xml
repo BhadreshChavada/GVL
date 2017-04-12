@@ -75,6 +75,12 @@
             android:label=""
             android:logo="@mipmap/ic_launcher" />
 
+        <activity
+            android:name=".LicenceApproveList"
+            android:icon="@mipmap/ic_launcher"
+            android:label=""
+            android:logo="@mipmap/ic_launcher" />
+
     </application>
 
 </manifest>

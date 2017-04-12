@@ -83,24 +83,25 @@ public class QuizActivity extends AppCompatActivity {
                 if (count <= 30) {
 
                     if (option1.isChecked()) {
+                        chacked++;
                         if (QuizArray.get(count).getAnswer().equals("1")) {
-                            chacked++;
                             Result++;
                         }
 
                     } else if (option2.isChecked()) {
+                        chacked++;
                         if (QuizArray.get(count).getAnswer().equals("2")) {
-                            chacked++;
                             Result++;
                         }
 
                     } else if (option3.isChecked()) {
+                        chacked++;
                         if (QuizArray.get(count).getAnswer().equals("3")) {
-                            chacked++;
                             Result++;
                         }
 
                     } else if (option4.isChecked()) {
+
                         if (QuizArray.get(count).getAnswer().equals("4")) {
                             chacked++;
                             Result++;

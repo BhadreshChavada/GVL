@@ -5,6 +5,6 @@ package com.gvl.Utils;
  */
 
 public class Config {
-    public static final String EMAIL = "bhadresh@gmail.com";
-    public static final String PASSWORD = "";
+    public static final String EMAIL = "dmvgeorgia@gmail.com";
+    public static final String PASSWORD = "dmv_georgia";
 }

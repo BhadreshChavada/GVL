@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.gvl.Model.LicenceModel;
 import com.gvl.Model.UserLicenceModel;
@@ -51,6 +52,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
     private static final String LEARNING_LIC_NO = "Licence_no";
     private static final String LEARNING_APPOINTMENT_DATE = "AppointmentDate";
 
+
     public GVLDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -62,7 +64,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
                 + REGISTRATION_ID + " INTEGER PRIMARY KEY," + REGISTRATION_FNAME + " TEXT," + REGISTRATION_LNAME + " TEXT," + REGISTRATION_BIRTHDATE + " TEXT," + REGISTRATION_EMAIL + " TEXT," + REGISTRATION_PASSWORD + " TEXT," + REGISTRATION_ADDRESS + " TEXT," + REGISTRATION_IMAGE + " TEXT," + REGISTRATION_BLOOD_GROUP + " TEXT," + REGISTRATION_GENDER + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
 
-        String CREATE_LEARNING_LIC_TABLE = "CREATE TABLE " + TABLE_LEARNING_LIC_REGISTRATION + "(" + LEARNING_LIC_ID + " INTEGER PRIMARY KEY," + LEARNING_LIC_VEHICLE_TYPE + " TEXT," + LEARNING_LIC_APPLYDATE + " TEXT," + LEARNING_LIC_EXAMSCORE + " TEXT," + LEARNING_LIC_STATUS + " Boolean," + LEARNING_LIC_NO + " TEXT," + LEARNING_APPOINTMENT_DATE + " TEXT," + LEARNING_LIC_USERID + " TEXT," + " FOREIGN KEY (" + LEARNING_LIC_USERID + ") REFERENCES " + TABLE_REGISTRATION + "(" + REGISTRATION_ID + "));";
+        String CREATE_LEARNING_LIC_TABLE = "CREATE TABLE " + TABLE_LEARNING_LIC_REGISTRATION + "(" + LEARNING_LIC_ID + " INTEGER PRIMARY KEY," + LEARNING_LIC_VEHICLE_TYPE + " TEXT," + LEARNING_LIC_APPLYDATE + " TEXT," + LEARNING_LIC_EXAMSCORE + " TEXT," + LEARNING_LIC_STATUS + " TEXT," + LEARNING_LIC_NO + " TEXT," + LEARNING_APPOINTMENT_DATE + " TEXT," + LEARNING_LIC_USERID + " TEXT," + " FOREIGN KEY (" + LEARNING_LIC_USERID + ") REFERENCES " + TABLE_REGISTRATION + "(" + REGISTRATION_ID + "));";
         db.execSQL(CREATE_LEARNING_LIC_TABLE);
     }
 
@@ -153,6 +155,30 @@ public class GVLDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public boolean GetLearningLicByType(String Type, String ID) {
+
+        int count = 0;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_LEARNING_LIC_REGISTRATION, new String[]{LEARNING_LIC_ID,
+                        LEARNING_LIC_VEHICLE_TYPE, LEARNING_LIC_APPLYDATE, LEARNING_LIC_EXAMSCORE, LEARNING_LIC_STATUS, LEARNING_APPOINTMENT_DATE}, LEARNING_LIC_VEHICLE_TYPE + "=?" + " AND " + LEARNING_LIC_USERID + "=?",
+                new String[]{Type, ID}, null, null, null, null);
+        if (cursor != null) {
+//            cursor.moveToFirst();
+            while (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+                break;
+            }
+        }
+
+        if (count == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     // Deleting single contact
     public void deleteContact(Contact contact) {
@@ -172,6 +198,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         values.put(LEARNING_LIC_STATUS, licenceModel.getSTATUS());
         values.put(LEARNING_LIC_USERID, licenceModel.getUSERID());
         values.put(LEARNING_LIC_NO, licenceModel.getLEARNING_LIC_NO());
+        values.put(LEARNING_APPOINTMENT_DATE, "");
 
         // Inserting Row
         db.insert(TABLE_LEARNING_LIC_REGISTRATION, null, values);
@@ -213,8 +240,37 @@ public class GVLDatabase extends SQLiteOpenHelper {
     public void updateAppointment(String Date, String Licno) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.rawQuery("UPDATE " + TABLE_LEARNING_LIC_REGISTRATION + " SET " + LEARNING_APPOINTMENT_DATE + " = '" + Date + "' WHERE " + LEARNING_LIC_NO + " = " + Licno, null);
+        ContentValues cv = new ContentValues();
+        cv.put(LEARNING_APPOINTMENT_DATE, Date);
+
+        db.update(TABLE_LEARNING_LIC_REGISTRATION, cv, LEARNING_LIC_NO + " = ?", new String[]{Licno});
     }
+
+    public void updateAppointmentStatus(String Staus, String Licno) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(LEARNING_LIC_STATUS, Staus);
+
+        db.update(TABLE_LEARNING_LIC_REGISTRATION, cv, LEARNING_LIC_NO + " = ?", new String[]{Licno});
+    }
+
+
+//    public void updateAppointmentStatus(Boolean status, String Licno) {
+//
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues cv1 = new ContentValues();
+//        cv1.put(LEARNING_LIC_STATUS, status);
+//
+//        Log.d("Status", String.valueOf(status));
+//
+////        if (status == false) {
+////            cv1.put(LEARNING_APPOINTMENT_DATE, "");
+////        }
+//
+//        db.update(TABLE_LEARNING_LIC_REGISTRATION, cv1, LEARNING_LIC_NO + " = ?", new String[]{Licno});
+////        db.rawQuery("UPDATE " + TABLE_LEARNING_LIC_REGISTRATION + " SET " + LEARNING_APPOINTMENT_DATE + " = '" + Date + "' WHERE " + LEARNING_LIC_NO + " = " + Licno, null);
+//    }
 
     public List<UserLicenceModel> getContact() {
         List<UserLicenceModel> LicenceModel = new ArrayList<UserLicenceModel>();

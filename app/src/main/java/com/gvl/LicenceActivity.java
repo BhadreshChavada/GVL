@@ -3,6 +3,7 @@ package com.gvl;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.gvl.Model.LicenceModel;
 import com.gvl.Sqlite.GVLDatabase;
 
 import java.text.BreakIterator;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +42,7 @@ public class LicenceActivity extends AppCompatActivity {
     private int year;
     private int month;
     private int day;
-    TextView txt_licence_testdate;
+    TextView txt_licence_testdate, txt_licence_apply_date;
     Button btn_appointment;
 
     @Override
@@ -61,7 +63,7 @@ public class LicenceActivity extends AppCompatActivity {
         final EditText licenceNo = (EditText) findViewById(R.id.learning_licence_no_edt);
         Button submit_btn = (Button) findViewById(R.id.learning_lic_submit_btn);
 
-        final TextView txt_licence_apply_date, txt_licence_type, txt_licence_exam_score, txt_licence_status;
+        final TextView txt_licence_type, txt_licence_exam_score, txt_licence_status;
         final LinearLayout licence_no_ll, detail_ll;
 
         txt_licence_apply_date = (TextView) findViewById(R.id.txt_licence_apply_date);
@@ -96,17 +98,30 @@ public class LicenceActivity extends AppCompatActivity {
                             status = "Approve";
 
 
-                        if (model.getAPPOINTMENTDATE() == null) {
-                            btn_appointment.setVisibility(View.GONE);
-                            txt_licence_testdate.setClickable(true);
-                        } else if ((Integer.parseInt(model.getEXAMSCORE()) > 2)) {
-                            btn_appointment.setVisibility(View.VISIBLE);
-                            txt_licence_testdate.setClickable(true);
-                            status = "You are not eligiable";
+                        if (model.getAPPOINTMENTDATE().equals("")) {
+
+                            if ((Integer.parseInt(model.getEXAMSCORE()) < 20)) {
+                                btn_appointment.setVisibility(View.GONE);
+                                txt_licence_testdate.setClickable(false);
+                                status = "You are not eligiable for Test Drive";
+                            } else {
+                                btn_appointment.setVisibility(View.GONE);
+                                txt_licence_testdate.setClickable(true);
+                            }
                         } else {
-                            txt_licence_testdate.setClickable(true);
-                            btn_appointment.setVisibility(View.VISIBLE);
+                            txt_licence_testdate.setText(model.getAPPOINTMENTDATE());
+                            btn_appointment.setVisibility(View.GONE);
+                            txt_licence_testdate.setClickable(false);
                         }
+
+//                        else if ((Integer.parseInt(model.getEXAMSCORE()) > 2)) {
+//                            btn_appointment.setVisibility(View.VISIBLE);
+//                            txt_licence_testdate.setClickable(true);
+//                            status = "You are not eligiable";
+//                        } else {
+//                            txt_licence_testdate.setClickable(true);
+//                            btn_appointment.setVisibility(View.VISIBLE);
+//                        }
                         txt_licence_status.setText(status);
 
 
@@ -131,13 +146,14 @@ public class LicenceActivity extends AppCompatActivity {
         btn_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getTimeDifference(txt_licence_apply_date.getText().toString(), txt_licence_testdate.getText().toString()) > 30) {
 
-                    GVLDatabase database = new GVLDatabase(LicenceActivity.this);
-                    database.updateAppointment(txt_licence_testdate.getText().toString(), licenceNo.getText().toString());
-                } else {
-                    Toast.makeText(LicenceActivity.this, "Can not select this date.", Toast.LENGTH_SHORT).show();
-                }
+                GVLDatabase database = new GVLDatabase(LicenceActivity.this);
+                database.updateAppointment(txt_licence_testdate.getText().toString(), licenceNo.getText().toString());
+
+                Toast.makeText(LicenceActivity.this, "Appointment successfully appoint", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LicenceActivity.this, MainMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -160,12 +176,13 @@ public class LicenceActivity extends AppCompatActivity {
         switch (id) {
             case DATE_PICKER_ID:
 
-                // open datepicker dialog.
-                // set date picker for current date
-                // add pickerListener listner to date picker
-                Calendar c = Calendar.getInstance();
-                c.set(year, month + 1, day);
 
+                Calendar c = Calendar.getInstance();
+
+                String Mindate_str = txt_licence_apply_date.getText().toString();
+                int day1 = Integer.parseInt(Mindate_str.substring(0, 2));
+
+                c.set(2017, 04, day1);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, year, month + 1, day);
                 datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                 return datePickerDialog;
@@ -187,8 +204,8 @@ public class LicenceActivity extends AppCompatActivity {
 
 
             // Show selected date
-            txt_licence_testdate.setText(new StringBuilder().append(month + 1)
-                    .append("-").append(day).append("-").append(year)
+            txt_licence_testdate.setText(new StringBuilder().append(day)
+                    .append("-").append(month + 1).append("-").append(year)
                     .append(" "));
 
             btn_appointment.setVisibility(View.VISIBLE);
@@ -214,35 +231,10 @@ public class LicenceActivity extends AppCompatActivity {
         }
 
 
-        LicenceAdapter adapter = new LicenceAdapter(LicenceActivity.this, list_licence);
-        licence_list.setAdapter(adapter);
+//        LicenceAdapter adapter = new LicenceAdapter(LicenceActivity.this, list_licence);
+//        licence_list.setAdapter(adapter);
 
     }
 
-    public int getTimeDifference(String endDate, String startDate) {
-
-        SimpleDateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date d = null;
-        java.util.Date d1 = null;
-        Calendar cal = Calendar.getInstance();
-        try {
-            d = dfDate.parse(endDate);
-            d1 = dfDate.parse(startDate);//Returns 15/10/2012
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-        int diffInDays = (int) ((d.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-//        System.out.println(diffInDays);
-
-        return diffInDays;
-
-//        Date diff = new Date(endDate.getTime() - startDate.getTime());
-//        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-//        calendar.setTime(diff);
-//        int day = calendar.get(Calendar.DAY_OF_MONTH);
-////        int hours = calendar.get(Calendar.HOUR_OF_DAY);
-//        return day;
-    }
 
 }

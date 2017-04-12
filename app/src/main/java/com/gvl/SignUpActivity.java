@@ -315,8 +315,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
             // Show selected date
-            birthdate_edt.setText(new StringBuilder().append(month + 1)
-                    .append("-").append(day).append("-").append(year)
+            birthdate_edt.setText(new StringBuilder().append(day)
+                    .append("-").append(month + 1).append("-").append(year)
                     .append(" "));
 
         }

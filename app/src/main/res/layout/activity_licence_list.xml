@@ -2,10 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <ListView
         android:id="@+id/licence_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="0dp"
+        android:layout_weight="9"></ListView>
+
+    <TextView
+        android:id="@+id/norecord"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:gravity="center"
+        android:text="No Record Found"
+        android:textSize="20dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btn"
+        android:text="Logout" />
 </LinearLayout>

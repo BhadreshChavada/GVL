@@ -35,12 +35,12 @@ public class TestResult extends AppCompatActivity {
         TextView confirm_txt = (TextView) findViewById(R.id.confirm_txt);
         ImageView img_status = (ImageView) findViewById(R.id.img_status);
 
-        if (Integer.parseInt(score) > 25) {
+        if (Integer.parseInt(score) > 24) {
             img_status.setImageResource(R.drawable.ic_checked);
             confirm_txt.setText("Licence No : " + LicNo + "\n You Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked"));
         } else {
             img_status.setImageResource(R.drawable.ic_cancel);
-            confirm_txt.setText("Licence No : " + LicNo + "\n You not Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked") + "\n Try AGain after 1 Month.");
+            confirm_txt.setText("You not Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked") + "\n Try Again after 1 Month.");
         }
         Button btn_signin = (Button) findViewById(R.id.btn_signin);
         btn_signin.setText("Back to Home");

@@ -96,13 +96,4 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-//    void Join() {
-//        GVLDatabase database = new GVLDatabase(MainMenuActivity.this);
-//        List<UserLicenceModel> data = database.getContact();
-//
-//        if (data != null) {
-//            Toast.makeText(this, "" + data.get(0).getEXAMSCORE(), Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
 }

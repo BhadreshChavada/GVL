@@ -164,22 +164,34 @@ public class LoginActivity extends AppCompatActivity {
 
     void LoginCheck() {
 
-        GVLDatabase database = new GVLDatabase(LoginActivity.this);
-        Contact c = database.getContact(mEmailView.getText().toString(), mPasswordView.getText().toString());
-        if (c != null) {
-            Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
-            Log.d("Fname", c.getFNAME());
+        if (mEmailView.getText().toString().equals("admin@gmail.com") && mPasswordView.getText().toString().equals("admin")) {
 
-            SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE",MODE_PRIVATE);
-            sp.edit().putString("EMAIL",c.getEMAIL()).commit();
-            sp.edit().putString("USERID",c.getID()).commit();
+            SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+            sp.edit().putString("EMAIL", "admin@gmail.com").commit();
+            sp.edit().putString("USERID", "0").commit();
 
-            Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+
+            Intent intent = new Intent(LoginActivity.this, LicenceApproveList.class);
             startActivity(intent);
             this.finish();
-
         } else {
-            Toast.makeText(this, "Email or Passwrod Wrong.", Toast.LENGTH_SHORT).show();
+            GVLDatabase database = new GVLDatabase(LoginActivity.this);
+            Contact c = database.getContact(mEmailView.getText().toString(), mPasswordView.getText().toString());
+            if (c != null) {
+                Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                Log.d("Fname", c.getFNAME());
+
+                SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+                sp.edit().putString("EMAIL", c.getEMAIL()).commit();
+                sp.edit().putString("USERID", c.getID()).commit();
+
+                Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                startActivity(intent);
+                this.finish();
+
+            } else {
+                Toast.makeText(this, "Email or Passwrod Wrong.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
