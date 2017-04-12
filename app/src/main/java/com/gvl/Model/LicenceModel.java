@@ -11,18 +11,37 @@ public class LicenceModel {
     String EXAMSCORE;
     Boolean STATUS;
     String USERID;
+    String LEARNING_LIC_NO;
 
 
     public LicenceModel() {
     }
 
-    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS, String USERID) {
+    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS, String USERID, String LEARNING_LIC_NO) {
         this.ID = ID;
         this.VEHICLE_TYPE = VEHICLE_TYPE;
         this.APPLYDATE = APPLYDATE;
         this.EXAMSCORE = EXAMSCORE;
         this.STATUS = STATUS;
         this.USERID = USERID;
+        this.LEARNING_LIC_NO = LEARNING_LIC_NO;
+    }
+
+    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS) {
+        this.ID = ID;
+        this.VEHICLE_TYPE = VEHICLE_TYPE;
+        this.APPLYDATE = APPLYDATE;
+        this.EXAMSCORE = EXAMSCORE;
+        this.STATUS = STATUS;
+
+    }
+
+    public String getLEARNING_LIC_NO() {
+        return LEARNING_LIC_NO;
+    }
+
+    public void setLEARNING_LIC_NO(String LEARNING_LIC_NO) {
+        this.LEARNING_LIC_NO = LEARNING_LIC_NO;
     }
 
     public String getID() {

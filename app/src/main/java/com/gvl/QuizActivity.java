@@ -36,12 +36,14 @@ public class QuizActivity extends AppCompatActivity {
     RadioButton option1, option2, option3, option4;
     Button Submitbtn;
     int count = 0;
+    int chacked = 0;
     CountDownTimer CountDownTimer;
     int Result = 0;
     int temp = 0;
     private String Licence_Type;
     String datetime;
     RadioGroup radioGroup;
+    String Random_no;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,10 +62,11 @@ public class QuizActivity extends AppCompatActivity {
 
     void init() {
 
+        Random_no = Random();
         InsertData();
         question = (TextView) findViewById(R.id.questiontxt);
 
-        radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
+        radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
         option1 = (RadioButton) findViewById(R.id.option1);
         option2 = (RadioButton) findViewById(R.id.option2);
         option3 = (RadioButton) findViewById(R.id.option3);
@@ -81,21 +84,25 @@ public class QuizActivity extends AppCompatActivity {
 
                     if (option1.isChecked()) {
                         if (QuizArray.get(count).getAnswer().equals("1")) {
+                            chacked++;
                             Result++;
                         }
 
                     } else if (option2.isChecked()) {
                         if (QuizArray.get(count).getAnswer().equals("2")) {
+                            chacked++;
                             Result++;
                         }
 
                     } else if (option3.isChecked()) {
                         if (QuizArray.get(count).getAnswer().equals("3")) {
+                            chacked++;
                             Result++;
                         }
 
                     } else if (option4.isChecked()) {
                         if (QuizArray.get(count).getAnswer().equals("4")) {
+                            chacked++;
                             Result++;
                         }
 
@@ -236,15 +243,21 @@ public class QuizActivity extends AppCompatActivity {
             LicenceModel model = new LicenceModel();
             model.setAPPLYDATE(datetime);
             model.setEXAMSCORE(String.valueOf(Result));
-            model.setSTATUS(false);
+            if (count > 25)
+                model.setSTATUS(true);
+            else
+                model.setSTATUS(false);
             model.setUSERID(sp.getString("USERID", ""));
             model.setVEHICLE_TYPE(Licence_Type);
+            model.setLEARNING_LIC_NO(Random_no);
             database.addLicenceRequest(model);
 
             sendEmail();
 
             Intent intent = new Intent(QuizActivity.this, TestResult.class);
             intent.putExtra("Score", String.valueOf(Result));
+            intent.putExtra("Checked", String.valueOf(chacked));
+            intent.putExtra("LicNo", Random_no);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
@@ -312,5 +325,13 @@ public class QuizActivity extends AppCompatActivity {
 
         //Executing sendmail to send email
         sm.execute();
+    }
+
+    private String Random() {
+        while (true) {
+            long numb = (long) (Math.random() * 100000000 * 1000000); // had to use this as int's are to small for a 10 digit number.
+            if (String.valueOf(numb).length() == 10)
+                return String.valueOf(numb);
+        }
     }
 }

@@ -23,6 +23,15 @@ public class UserLicenceModel {
     String IMAGE;
     String GENDER;
     String BLOODGROUP;
+    String LicenceNO;
+
+    public String getLicenceNO() {
+        return LicenceNO;
+    }
+
+    public void setLicenceNO(String licenceNO) {
+        LicenceNO = licenceNO;
+    }
 
     public String getGENDER() {
         return GENDER;

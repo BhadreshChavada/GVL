@@ -48,6 +48,8 @@ public class GVLDatabase extends SQLiteOpenHelper {
     private static final String LEARNING_LIC_EXAMSCORE = "examScore";
     private static final String LEARNING_LIC_STATUS = "Status";
     private static final String LEARNING_LIC_USERID = "userid";
+    private static final String LEARNING_LIC_NO = "Licence_no";
+    private static final String LEARNING_APPOINTMENT_DATE = "AppointmentDate";
 
     public GVLDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,7 +62,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
                 + REGISTRATION_ID + " INTEGER PRIMARY KEY," + REGISTRATION_FNAME + " TEXT," + REGISTRATION_LNAME + " TEXT," + REGISTRATION_BIRTHDATE + " TEXT," + REGISTRATION_EMAIL + " TEXT," + REGISTRATION_PASSWORD + " TEXT," + REGISTRATION_ADDRESS + " TEXT," + REGISTRATION_IMAGE + " TEXT," + REGISTRATION_BLOOD_GROUP + " TEXT," + REGISTRATION_GENDER + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
 
-        String CREATE_LEARNING_LIC_TABLE = "CREATE TABLE " + TABLE_LEARNING_LIC_REGISTRATION + "(" + LEARNING_LIC_ID + " INTEGER PRIMARY KEY," + LEARNING_LIC_VEHICLE_TYPE + " TEXT," + LEARNING_LIC_APPLYDATE + " TEXT," + LEARNING_LIC_EXAMSCORE + " TEXT," + LEARNING_LIC_STATUS + " Boolean," + LEARNING_LIC_USERID + " TEXT," + " FOREIGN KEY (" + LEARNING_LIC_USERID + ") REFERENCES " + TABLE_REGISTRATION + "(" + REGISTRATION_ID + "));";
+        String CREATE_LEARNING_LIC_TABLE = "CREATE TABLE " + TABLE_LEARNING_LIC_REGISTRATION + "(" + LEARNING_LIC_ID + " INTEGER PRIMARY KEY," + LEARNING_LIC_VEHICLE_TYPE + " TEXT," + LEARNING_LIC_APPLYDATE + " TEXT," + LEARNING_LIC_EXAMSCORE + " TEXT," + LEARNING_LIC_STATUS + " Boolean," + LEARNING_LIC_NO + " TEXT," + LEARNING_APPOINTMENT_DATE + " TEXT," + LEARNING_LIC_USERID + " TEXT," + " FOREIGN KEY (" + LEARNING_LIC_USERID + ") REFERENCES " + TABLE_REGISTRATION + "(" + REGISTRATION_ID + "));";
         db.execSQL(CREATE_LEARNING_LIC_TABLE);
     }
 
@@ -122,6 +124,36 @@ public class GVLDatabase extends SQLiteOpenHelper {
         }
     }
 
+
+    public LicenceModel GetLearningLicByID(String ID) {
+
+        int count = 0;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_LEARNING_LIC_REGISTRATION, new String[]{LEARNING_LIC_ID,
+                        LEARNING_LIC_VEHICLE_TYPE, LEARNING_LIC_APPLYDATE, LEARNING_LIC_EXAMSCORE, LEARNING_LIC_STATUS}, LEARNING_LIC_NO + "=?",
+                new String[]{ID}, null, null, null, null);
+        if (cursor != null) {
+//            cursor.moveToFirst();
+            while (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+                break;
+            }
+        }
+
+        if (count > 0) {
+
+            LicenceModel licenceModel = new LicenceModel(cursor.getString(0),
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.parseBoolean(cursor.getString(4)));
+            // return contact
+            return licenceModel;
+        } else {
+            return null;
+        }
+    }
+
+
     // Deleting single contact
     public void deleteContact(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -139,6 +171,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         values.put(LEARNING_LIC_EXAMSCORE, licenceModel.getEXAMSCORE());
         values.put(LEARNING_LIC_STATUS, licenceModel.getSTATUS());
         values.put(LEARNING_LIC_USERID, licenceModel.getUSERID());
+        values.put(LEARNING_LIC_NO, licenceModel.getLEARNING_LIC_NO());
 
         // Inserting Row
         db.insert(TABLE_LEARNING_LIC_REGISTRATION, null, values);
@@ -166,7 +199,8 @@ public class GVLDatabase extends SQLiteOpenHelper {
                 licenceModel.setAPPLYDATE(cursor.getString(2));
                 licenceModel.setEXAMSCORE(cursor.getString(3));
                 licenceModel.setSTATUS(Boolean.valueOf(cursor.getString(4)));
-                licenceModel.setUSERID(cursor.getString(5));
+                licenceModel.setLEARNING_LIC_NO(cursor.getString(5));
+                licenceModel.setUSERID(cursor.getString(6));
                 // Adding contact to list
                 LicenceModel.add(licenceModel);
             } while (cursor.moveToNext());
@@ -205,7 +239,8 @@ public class GVLDatabase extends SQLiteOpenHelper {
                 licenceModel.setAPPLYDATE(cursor.getString(12));
                 licenceModel.setEXAMSCORE(cursor.getString(13));
                 licenceModel.setSTATUS(Boolean.valueOf(cursor.getString(14)));
-                licenceModel.setUSERID(cursor.getString(15));
+                licenceModel.setLicenceNO(cursor.getString(15));
+                licenceModel.setUSERID(cursor.getString(16));
 
                 // Adding contact to list
                 LicenceModel.add(licenceModel);

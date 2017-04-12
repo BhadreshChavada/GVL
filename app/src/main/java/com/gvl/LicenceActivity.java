@@ -5,7 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gvl.Adapter.LicenceAdapter;
 import com.gvl.Model.LicenceModel;
@@ -26,15 +30,39 @@ public class LicenceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_licence_list);
+        setContentView(R.layout.activity_licence);
 
         android.support.v7.app.ActionBar menu = getSupportActionBar();
         menu.setDisplayShowHomeEnabled(true);
         menu.setLogo(R.mipmap.ic_launcher);
         menu.setDisplayUseLogoEnabled(true);
 
+        SetView();
+//        init();
+    }
 
-        init();
+    void SetView() {
+        final EditText licenceNo = (EditText) findViewById(R.id.learning_licence_no_edt);
+        Button submit_btn = (Button) findViewById(R.id.learning_lic_submit_btn);
+
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (licenceNo.getText().toString().length() == 10) {
+                    GVLDatabase database = new GVLDatabase(LicenceActivity.this);
+                    LicenceModel model = database.GetLearningLicByID(licenceNo.getText().toString());
+                    if (model != null) {
+//                        model.getID();
+                        Toast.makeText(LicenceActivity.this, "-- : " + model.getID(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LicenceActivity.this, "Enter Valid Licence No.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(LicenceActivity.this, "Enter 10 digit Learning Licence No", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     void init() {
