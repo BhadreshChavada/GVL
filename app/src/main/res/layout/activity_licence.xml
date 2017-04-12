@@ -13,7 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/licence_no_ll">
 
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +55,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/detail_ll"
+            android:visibility="gone">
 
 
             <TableLayout
@@ -148,14 +151,20 @@
                 </TableRow>
 
                 <TableRow
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    >
+                    android:gravity="center">
 
 
                     <Button
+                        android:id="@+id/btn_appointment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_span="2"
+                        android:background="@drawable/bg_btn"
+                        android:gravity="center"
+                        android:text="Take Appointment" />
 
                 </TableRow>
 

@@ -132,7 +132,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_LEARNING_LIC_REGISTRATION, new String[]{LEARNING_LIC_ID,
-                        LEARNING_LIC_VEHICLE_TYPE, LEARNING_LIC_APPLYDATE, LEARNING_LIC_EXAMSCORE, LEARNING_LIC_STATUS}, LEARNING_LIC_NO + "=?",
+                        LEARNING_LIC_VEHICLE_TYPE, LEARNING_LIC_APPLYDATE, LEARNING_LIC_EXAMSCORE, LEARNING_LIC_STATUS, LEARNING_APPOINTMENT_DATE}, LEARNING_LIC_NO + "=?",
                 new String[]{ID}, null, null, null, null);
         if (cursor != null) {
 //            cursor.moveToFirst();
@@ -145,7 +145,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         if (count > 0) {
 
             LicenceModel licenceModel = new LicenceModel(cursor.getString(0),
-                    cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.parseBoolean(cursor.getString(4)));
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), Boolean.parseBoolean(cursor.getString(4)), cursor.getString(5));
             // return contact
             return licenceModel;
         } else {
@@ -208,6 +208,12 @@ public class GVLDatabase extends SQLiteOpenHelper {
 
         // return contact list
         return LicenceModel;
+    }
+
+    public void updateAppointment(String Date, String Licno) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.rawQuery("UPDATE " + TABLE_LEARNING_LIC_REGISTRATION + " SET " + LEARNING_APPOINTMENT_DATE + " = '" + Date + "' WHERE " + LEARNING_LIC_NO + " = " + Licno, null);
     }
 
     public List<UserLicenceModel> getContact() {

@@ -12,6 +12,7 @@ public class LicenceModel {
     Boolean STATUS;
     String USERID;
     String LEARNING_LIC_NO;
+    String APPOINTMENTDATE;
 
 
     public LicenceModel() {
@@ -27,13 +28,22 @@ public class LicenceModel {
         this.LEARNING_LIC_NO = LEARNING_LIC_NO;
     }
 
-    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS) {
+    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS, String APPOINTMENTDATE) {
         this.ID = ID;
         this.VEHICLE_TYPE = VEHICLE_TYPE;
         this.APPLYDATE = APPLYDATE;
         this.EXAMSCORE = EXAMSCORE;
         this.STATUS = STATUS;
+        this.APPOINTMENTDATE = APPOINTMENTDATE;
 
+    }
+
+    public String getAPPOINTMENTDATE() {
+        return APPOINTMENTDATE;
+    }
+
+    public void setAPPOINTMENTDATE(String APPOINTMENTDATE) {
+        this.APPOINTMENTDATE = APPOINTMENTDATE;
     }
 
     public String getLEARNING_LIC_NO() {
