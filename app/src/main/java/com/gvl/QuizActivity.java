@@ -1,13 +1,13 @@
 package com.gvl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Path;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -19,12 +19,14 @@ import android.widget.Toast;
 import com.gvl.Model.LicenceModel;
 import com.gvl.Model.QuizModel;
 import com.gvl.Sqlite.GVLDatabase;
-import com.gvl.Utils.SendMail;
+import com.gvl.Utils.Mail;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Handler;
+
+import javax.mail.AuthenticationFailedException;
+import javax.mail.MessagingException;
 
 
 public class QuizActivity extends AppCompatActivity {
@@ -244,7 +246,7 @@ public class QuizActivity extends AppCompatActivity {
             LicenceModel model = new LicenceModel();
             model.setAPPLYDATE(datetime);
             model.setEXAMSCORE(String.valueOf(Result));
-            if (count > 25)
+            if (count > 24)
                 model.setSTATUS(true);
             else
                 model.setSTATUS(false);
@@ -253,7 +255,7 @@ public class QuizActivity extends AppCompatActivity {
             model.setLEARNING_LIC_NO(Random_no);
             database.addLicenceRequest(model);
 
-            sendEmail();
+            sendMessage();
 
             Intent intent = new Intent(QuizActivity.this, TestResult.class);
             intent.putExtra("Score", String.valueOf(Result));
@@ -312,27 +314,76 @@ public class QuizActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void sendEmail() {
-        //Getting content for email
-
-        SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
-
-        String email = sp.getString("EMAIL", "");
-        String subject = "Georgia Driving Licence";
-        String message = " you completed the Test at " + datetime + "., for " + Licence_Type + ". Your Score is :  " + Result;
-
-        //Creating SendMail object
-        SendMail sm = new SendMail(this, email, subject, message);
-
-        //Executing sendmail to send email
-        sm.execute();
-    }
 
     private String Random() {
         while (true) {
             long numb = (long) (Math.random() * 100000000 * 1000000); // had to use this as int's are to small for a 10 digit number.
             if (String.valueOf(numb).length() == 10)
                 return String.valueOf(numb);
+        }
+    }
+
+    private void sendMessage() {
+
+        String message = "";
+        if (Result > 24) {
+
+            message = "You have cleared the Learner's Licence \nScore :  " + Result + "\nLearner's Licence No. :  " + Random_no + "\nYou can now apply for Driver's Licence";
+//            confirm_txt.setText("Licence No : " + LicNo + "\n You Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked"));
+        } else {
+            message = "Sorry you could not make it. \nScore :  " + Result + "\nResut : Failed \nPlease try after a week.";
+        }
+
+        SharedPreferences sp = getSharedPreferences("SHAREDPREFERENCE", MODE_PRIVATE);
+
+        String[] recipients = {sp.getString("EMAIL", "")};
+        SendEmailAsyncTask email = new SendEmailAsyncTask();
+        email.activity = this;
+        email.m = new Mail("dmvgeorgia@gmail.com", "dmv_georgia");
+        email.m.set_from("dmvgeorgia@gmail.com");
+        email.m.setBody(message);
+        email.m.set_to(recipients);
+        email.m.set_subject("DMV Learning Licence Test Result");
+        email.execute();
+    }
+
+
+}
+
+class SendEmailAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    Mail m;
+    QuizActivity activity;
+
+    public SendEmailAsyncTask() {
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        try {
+            if (m.send()) {
+//                Toast.makeText(activity, "Email sent.", Toast.LENGTH_SHORT).show();
+            } else {
+//                Toast.makeText(activity, "Email failed to send.", Toast.LENGTH_SHORT).show();
+            }
+
+            return true;
+        } catch (AuthenticationFailedException e) {
+            Log.e(SendEmailAsyncTask.class.getName(), "Bad account details");
+            e.printStackTrace();
+
+//            Toast.makeText(activity, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            return false;
+        } catch (MessagingException e) {
+            Log.e(SendEmailAsyncTask.class.getName(), "Email failed");
+            e.printStackTrace();
+
+//            Toast.makeText(activity, "Email failed to send.", Toast.LENGTH_SHORT).show();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+//            Toast.makeText(activity, "Unexpected error occured.", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

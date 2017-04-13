@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical"
-    android:weightSum="10"
-    android:background="@color/bg_color">
+    android:weightSum="10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,13 +26,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="1). You need to give answer in 30 sec. " />
+            android:text="1) There will be 30 questions." />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="2). If back press or minimize the application Test will be terminated. " />
+            android:text="2) You have given 30 seconds for each question to answer." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="3) Do not press back or minimize the Application, else test will be terminated." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="4) Atleast 24 should be correct to Pass the test." />
     </LinearLayout>
 
     <Button
@@ -40,6 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Start Test"
-        android:background="@drawable/bg_btn"/>
+        android:background="@drawable/bg_btn"
+        android:text="Start Test" />
 </LinearLayout>

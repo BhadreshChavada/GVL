@@ -37,10 +37,12 @@ public class TestResult extends AppCompatActivity {
 
         if (Integer.parseInt(score) > 24) {
             img_status.setImageResource(R.drawable.ic_checked);
-            confirm_txt.setText("Licence No : " + LicNo + "\n You Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked"));
+
+            confirm_txt.setText("You have cleared the Learner's Licence \nScore :  " + score + "\nLearner's Licence No. :  " + LicNo+"\nYou can now apply for Driver's Licence");
+//            confirm_txt.setText("Licence No : " + LicNo + "\n You Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked"));
         } else {
             img_status.setImageResource(R.drawable.ic_cancel);
-            confirm_txt.setText("You not Complete the Test. \n Your Score is : " + score + "\n Total attempt question : " + getIntent().getStringExtra("Checked") + "\n Try Again after 1 Month.");
+            confirm_txt.setText("Sorry you could not make it. \nScore :  " + score + "\nResut : Failed \nPlease try after a week.");
         }
         Button btn_signin = (Button) findViewById(R.id.btn_signin);
         btn_signin.setText("Back to Home");
