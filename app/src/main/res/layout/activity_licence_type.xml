@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    android:background="@color/bg_color">
+    android:background="@drawable/ic_bg2">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="Please click from below class"
+        android:textColor="@color/title_text"
         android:textSize="20dp" />
 
     <Button

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="10dp">
 
 
@@ -22,7 +22,7 @@
                 android:layout_span="2"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Learning Licence Details"
+                android:text="Driver's Licence Request"
                 android:textColor="@color/title_text"
                 android:textSize="20dp" />
 
@@ -39,6 +39,11 @@
                 android:layout_height="wrap_content"
                 android:text="First Name" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=":" />
             <TextView
                 android:id="@+id/txt_first_name"
                 android:layout_width="match_parent"
@@ -58,6 +63,11 @@
                 android:text="Last Name" />
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=":" />
+            <TextView
                 android:id="@+id/txt_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -73,7 +83,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Licence Type" />
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=":" />
             <TextView
                 android:id="@+id/txt_licence_type"
                 android:layout_width="match_parent"
@@ -90,7 +104,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Learning Licence Apply Date" />
+                android:text="Learning Licence Date" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=":" />
 
             <TextView
                 android:id="@+id/txt_licence_apply_date"
@@ -109,7 +128,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Exam Score" />
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text=":" />
             <TextView
                 android:id="@+id/txt_licence_exam_score"
                 android:layout_width="match_parent"
@@ -125,7 +148,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Test Drive Date" />
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:layout_marginLeft="10dp"/>
             <TextView
                 android:id="@+id/txt_licence_status"
                 android:layout_width="match_parent"
@@ -139,26 +166,34 @@
             android:layout_marginTop="10dp">
 
 
-            <Button
-                android:id="@+id/btn_licence_approve"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_btn"
-                android:text="Approve" />
-
-            <Button
-
-                android:id="@+id/btn_licence_reject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_span="2"
-                android:layout_weight="1"
-                android:background="@drawable/bg_btn"
-                android:text="Reject" />
-
         </TableRow>
 
     </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_licence_approve"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn"
+            android:text="Approve" />
+
+        <Button
+
+            android:id="@+id/btn_licence_reject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn"
+            android:text="Reject" />
+    </LinearLayout>
 </LinearLayout>

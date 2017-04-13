@@ -100,8 +100,8 @@ public class LicenceActivity extends AppCompatActivity {
 
                         if (model.getAPPOINTMENTDATE().equals("")) {
 
-                            btn_appointment.setBackgroundResource(R.drawable.bg_btn);
-                            btn_appointment.setText("Select Date");
+                            txt_licence_testdate.setBackgroundResource(R.drawable.bg_btn);
+                            txt_licence_testdate.setText("Select Date");
 
                             if ((Integer.parseInt(model.getEXAMSCORE()) < 24)) {
                                 btn_appointment.setVisibility(View.GONE);
