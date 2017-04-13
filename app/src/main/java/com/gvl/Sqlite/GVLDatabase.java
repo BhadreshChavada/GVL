@@ -93,6 +93,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         values.put(REGISTRATION_GENDER, contact.getGENDER());
         values.put(REGISTRATION_BLOOD_GROUP, contact.getBLOODGROP());
 
+
         // Inserting Row
         db.insert(TABLE_REGISTRATION, null, values);
         db.close(); // Closing database connection
@@ -147,7 +148,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
         if (count > 0) {
 
             LicenceModel licenceModel = new LicenceModel(cursor.getString(0),
-                    cursor.getString(1), cursor.getString(2), cursor.getString(3), Boolean.parseBoolean(cursor.getString(4)), cursor.getString(5));
+                    cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
             // return contact
             return licenceModel;
         } else {
@@ -195,9 +196,9 @@ public class GVLDatabase extends SQLiteOpenHelper {
         values.put(LEARNING_LIC_VEHICLE_TYPE, licenceModel.getVEHICLE_TYPE());
         values.put(LEARNING_LIC_APPLYDATE, licenceModel.getAPPLYDATE());
         values.put(LEARNING_LIC_EXAMSCORE, licenceModel.getEXAMSCORE());
-        values.put(LEARNING_LIC_STATUS, licenceModel.getSTATUS());
         values.put(LEARNING_LIC_USERID, licenceModel.getUSERID());
         values.put(LEARNING_LIC_NO, licenceModel.getLEARNING_LIC_NO());
+        values.put(LEARNING_LIC_STATUS, "false");
         values.put(LEARNING_APPOINTMENT_DATE, "");
 
         // Inserting Row
@@ -225,7 +226,7 @@ public class GVLDatabase extends SQLiteOpenHelper {
                 licenceModel.setVEHICLE_TYPE(cursor.getString(1));
                 licenceModel.setAPPLYDATE(cursor.getString(2));
                 licenceModel.setEXAMSCORE(cursor.getString(3));
-                licenceModel.setSTATUS(Boolean.valueOf(cursor.getString(4)));
+                licenceModel.setSTATUS(cursor.getString(4));
                 licenceModel.setLEARNING_LIC_NO(cursor.getString(5));
                 licenceModel.setUSERID(cursor.getString(6));
                 // Adding contact to list

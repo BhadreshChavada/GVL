@@ -9,7 +9,7 @@ public class LicenceModel {
     String VEHICLE_TYPE;
     String APPLYDATE;
     String EXAMSCORE;
-    Boolean STATUS;
+    String STATUS;
     String USERID;
     String LEARNING_LIC_NO;
     String APPOINTMENTDATE;
@@ -18,7 +18,7 @@ public class LicenceModel {
     public LicenceModel() {
     }
 
-    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS, String USERID, String LEARNING_LIC_NO) {
+    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, String STATUS, String USERID, String LEARNING_LIC_NO) {
         this.ID = ID;
         this.VEHICLE_TYPE = VEHICLE_TYPE;
         this.APPLYDATE = APPLYDATE;
@@ -28,7 +28,7 @@ public class LicenceModel {
         this.LEARNING_LIC_NO = LEARNING_LIC_NO;
     }
 
-    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, Boolean STATUS, String APPOINTMENTDATE) {
+    public LicenceModel(String ID, String VEHICLE_TYPE, String APPLYDATE, String EXAMSCORE, String STATUS, String APPOINTMENTDATE) {
         this.ID = ID;
         this.VEHICLE_TYPE = VEHICLE_TYPE;
         this.APPLYDATE = APPLYDATE;
@@ -36,6 +36,10 @@ public class LicenceModel {
         this.STATUS = STATUS;
         this.APPOINTMENTDATE = APPOINTMENTDATE;
 
+    }
+
+    public String getSTATUS() {
+        return STATUS;
     }
 
     public String getAPPOINTMENTDATE() {
@@ -52,6 +56,10 @@ public class LicenceModel {
 
     public void setLEARNING_LIC_NO(String LEARNING_LIC_NO) {
         this.LEARNING_LIC_NO = LEARNING_LIC_NO;
+    }
+
+    public void setSTATUS(String STATUS) {
+        this.STATUS = STATUS;
     }
 
     public String getID() {
@@ -86,18 +94,6 @@ public class LicenceModel {
         this.EXAMSCORE = EXAMSCORE;
     }
 
-    public Boolean getSTATUS() {
-        return STATUS;
-    }
-
-//    public void setSTATUS(String STATUS) {
-//        this.STATUS = STATUS;
-//    }
-
-
-    public void setSTATUS(Boolean STATUS) {
-        this.STATUS = STATUS;
-    }
 
     public String getUSERID() {
         return USERID;

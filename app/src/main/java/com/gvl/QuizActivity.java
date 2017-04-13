@@ -246,10 +246,10 @@ public class QuizActivity extends AppCompatActivity {
             LicenceModel model = new LicenceModel();
             model.setAPPLYDATE(datetime);
             model.setEXAMSCORE(String.valueOf(Result));
-            if (count > 24)
-                model.setSTATUS(true);
-            else
-                model.setSTATUS(false);
+//            if (count > 24)
+//                model.setSTATUS(true);
+//            else
+//                model.setSTATUS(false);
             model.setUSERID(sp.getString("USERID", ""));
             model.setVEHICLE_TYPE(Licence_Type);
             model.setLEARNING_LIC_NO(Random_no);

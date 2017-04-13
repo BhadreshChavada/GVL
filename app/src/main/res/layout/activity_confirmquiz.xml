@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="4) Atleast 24 should be correct to Pass the test." />
+            android:text="4) Atleast 24 Answer should be correct to Pass the test." />
     </LinearLayout>
 
     <Button

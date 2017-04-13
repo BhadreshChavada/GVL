@@ -75,7 +75,7 @@ public class LicenceAdapter extends BaseAdapter {
         txt_lastname.setText(licence_array.get(position).getLNAME());
         String status;
 
-        if (licence_array.get(position).getSTATUS().equals("false")) {
+        if (licence_array.get(position).getSTATUS().toString().equalsIgnoreCase("false")) {
             status = "Not Approve";
             btn_licence_approve.setVisibility(View.VISIBLE);
             btn_licence_reject.setVisibility(View.VISIBLE);

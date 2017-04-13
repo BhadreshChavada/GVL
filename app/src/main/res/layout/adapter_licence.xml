@@ -13,6 +13,25 @@
 
         <TableRow
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Learning Licence Details"
+                android:textColor="@color/title_text"
+                android:textSize="20dp" />
+
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
             <TextView
@@ -27,6 +46,7 @@
 
 
         </TableRow>
+
 
         <TableRow
             android:layout_width="fill_parent"

@@ -92,7 +92,7 @@ public class LicenceActivity extends AppCompatActivity {
                         txt_licence_type.setText(model.getVEHICLE_TYPE());
                         txt_licence_exam_score.setText(model.getEXAMSCORE());
                         String status;
-                        if (model.getSTATUS() == false)
+                        if (model.getSTATUS().equals("false"))
                             status = "Not Approve";
                         else
                             status = "Approve";
@@ -100,7 +100,10 @@ public class LicenceActivity extends AppCompatActivity {
 
                         if (model.getAPPOINTMENTDATE().equals("")) {
 
-                            if ((Integer.parseInt(model.getEXAMSCORE()) < 20)) {
+                            btn_appointment.setBackgroundResource(R.drawable.bg_btn);
+                            btn_appointment.setText("Select Date");
+
+                            if ((Integer.parseInt(model.getEXAMSCORE()) < 24)) {
                                 btn_appointment.setVisibility(View.GONE);
                                 txt_licence_testdate.setClickable(false);
                                 status = "You are not eligiable for Test Drive";
