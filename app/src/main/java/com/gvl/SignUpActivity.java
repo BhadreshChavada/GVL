@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Bhadresh Chavada on 04-04-2017.
@@ -57,6 +58,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Spinner bloodgroup;
     String str_image;
     int temp = 0;
+    int birthallow = 0;
     int birthtemp = 0;
 
 
@@ -221,6 +223,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             focusView.requestFocus();
         } else if (temp == 0 && birthtemp == 0 && bloodgroup.getSelectedItemPosition() == 0) {
 
+        } else if (birthallow == 1) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Your age is below 18, try next time");
+            alertDialogBuilder.setPositiveButton("ok",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+//                                    Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+
+//                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+//                            startActivity(intent);
+//                            SignUpActivity.this.finish();
+                            onBackPressed();
+
+                        }
+                    });
+//            alertDialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+////                    finish();
+//                }
+//            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         } else if (fname_edt.getText().toString().length() > 0 && lname_edt.getText().toString().length() > 0 && email_edt.getText().toString().length() > 0 && password_edt.getText().toString().length() > 0 && temp == 1) {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -293,9 +321,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 // set date picker for current date
                 // add pickerListener listner to date picker
                 Calendar c = Calendar.getInstance();
-                c.set(year - 18, month + 1, day);
+                c.set(year, month + 1, day);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, year - 18, month + 1, day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, pickerListener, year, month + 1, day);
                 datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
                 return datePickerDialog;
         }
@@ -313,11 +341,25 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             month = selectedMonth;
             day = selectedDay;
 
+            Calendar myBirthday = Calendar.getInstance();
+            myBirthday.set(year, month, day);
+            Calendar now = Calendar.getInstance();
+            long diffMillis = Math.abs(now.getTimeInMillis() - myBirthday.getTimeInMillis());
+            long differenceInDays = TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
+//            Toast.makeText(SignUpActivity.this, "" + differenceInDays, Toast.LENGTH_SHORT).show();
 
             // Show selected date
             birthdate_edt.setText(new StringBuilder().append(day)
                     .append("-").append(month + 1).append("-").append(year)
                     .append(" "));
+            if (differenceInDays >= 18 * 365) {
+
+                birthallow = 0;
+            } else {
+
+                birthallow = 1;
+//                Toast.makeText(SignUpActivity.this, "Your age is below 18, try next time", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };

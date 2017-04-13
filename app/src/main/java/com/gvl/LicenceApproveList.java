@@ -34,6 +34,12 @@ public class LicenceApproveList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_licence_list);
 
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.mipmap.ic_launcher);
+        menu.setDisplayUseLogoEnabled(true);
+
+
         init();
     }
 
